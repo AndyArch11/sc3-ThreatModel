@@ -1,0 +1,595 @@
+import React, { useEffect } from "react";
+import "./TM.css";
+
+const TMInputForm = ({ 
+  entries,
+  form,
+  setForm,
+  handleChange,
+  handleSubmit,
+  handleCancel,
+  editIndex = null,
+  fieldsOpen, 
+  setFieldsOpen,
+  dreadStats,
+  dreadRiskColors,
+  lastThreat,
+}) => {
+  // Use centralized DREAD stats from TMForm
+  const { dreadAverage, dreadRisk } = dreadStats(form);
+
+  // Robustly pre-fill all fields except Threat ID, Threat Description, and Assessed Date in the Threat Model Details fieldset from lastThreat when starting a new entry
+  useEffect(() => {
+    if (
+      editIndex === null &&
+      lastThreat &&
+      fieldsOpen &&
+      (!form.threatId && !form.threatDescription && (!form.assessedDate || form.assessedDate === ""))
+    ) {
+      // Only pre-fill Threat Model Details fields except Threat ID, Threat Description, Assessed Date
+      const prefillFields = [
+        "assessedBy",
+        "designLocation",
+        "source",
+        "target",
+        "protocols",
+        "authentication",
+        "dataFlow",
+        "dataClassification",
+        "businessProcess",
+        "businessCriticality"
+      ];
+      const newForm = { ...form };
+      prefillFields.forEach(field => {
+        newForm[field] = lastThreat[field] !== undefined ? lastThreat[field] : (typeof newForm[field] === "number" ? 0 : "");
+      });
+      setForm(newForm);
+    }
+  }, [editIndex, lastThreat, fieldsOpen, form.threatId, form.threatDescription, form.assessedDate, setForm]);
+
+  return (    
+    <form onSubmit={handleSubmit}>
+      <details
+        open={fieldsOpen}
+        onToggle={e => {
+          if (typeof setFieldsOpen === 'function') {
+            setFieldsOpen(e.target.open);
+          } else {
+            console.warn('setFieldsOpen is not a function:', setFieldsOpen);
+          }
+        }}
+      >
+        <summary className="tm-inputform-summary">
+          &#x1F6A7; Threat Modelling Form Fields
+        </summary>
+        <div>
+          <table className="tm-inputform-table">
+            <tbody>
+              {/* Threat Model Details */ }
+              <tr>
+                <td colSpan={2}>
+                  <fieldset className="tm-inputform-fieldset tm-inputform-fieldset-threat">
+                    <legend className="tm-inputform-legend tm-inputform-legend-threat">
+                      Threat Model Details - what are we working on?
+                    </legend>
+                    <table className="tm-inputform-field-table">
+                      <tbody>
+                        <tr title="A unique identifier for the threat model entry (e.g., a TM-001)">
+                          <td className="tm-inputform-field-cell-label"><label>Threat ID:<span className="tm-required">*</span></label></td>
+                          <td>
+                            <input
+                              type="text"
+                              name="threatId"
+                              value={form.threatId}
+                              onChange={handleChange}
+                              required
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Threat Description:<span className="tm-required">*</span></label></td>
+                          <td>
+                            <textarea
+                              name="threatDescription"
+                              value={form.threatDescription}
+                              onChange={handleChange}
+                              required
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Assessed By:<span className="tm-required">*</span></label></td>
+                          <td>
+                            <input
+                              type="text"
+                              name="assessedBy"
+                              value={form.assessedBy}
+                              onChange={handleChange}
+                              required
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Assessed Date:</label></td>
+                          <td>
+                            <input
+                              type="date"
+                              name="assessedDate"
+                              value={form.assessedDate}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Design Location (URL):</label></td>
+                          <td>
+                            <input
+                              type="url"
+                              name="designLocation"
+                              value={form.designLocation}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Source:</label></td>
+                          <td>
+                            <textarea
+                              name="source"
+                              value={form.source}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Target:</label></td>
+                          <td>
+                            <textarea
+                              name="target"
+                              value={form.target}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Protocol(s):</label></td>
+                          <td>
+                            <textarea
+                              name="protocols"
+                              value={form.protocols}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Authentication:</label></td>
+                          <td>
+                            <textarea
+                              name="authentication"
+                              value={form.authentication}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Data Flow:</label></td>
+                          <td>
+                            <textarea
+                              name="dataFlow"
+                              value={form.dataFlow}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Data Classification:</label></td>
+                          <td>
+                            <select
+                              name="dataClassification"
+                              value={form.dataClassification}
+                              onChange={handleChange}
+                              className="tm-input"
+                            >
+                              <option value="">Select...</option>
+                              <option value="1">Public</option>
+                              <option value="2">Internal</option>
+                              <option value="3">Confidential</option>
+                              <option value="4">Restricted</option>
+                              <option value="5">Highly Restricted</option>
+                            </select>
+                            </td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Business Process:</label></td>
+                          <td>
+                            <input
+                              type="text"
+                              name="businessProcess"
+                              value={form.businessProcess}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label>Business Criticality:</label></td>
+                          <td>
+                            <select
+                              name="businessCriticality"
+                              value={form.businessCriticality}
+                              onChange={handleChange}
+                              className="tm-input"
+                            >
+                              <option value="">Select...</option>
+                              <option value="1">Platinum / Tier 1</option>
+                              <option value="2">Gold / Tier 2</option>
+                              <option value="3">Silver / Tier 3</option>
+                              <option value="4">Bronze / Tier 4</option>
+                              <option value="5">None / Tier 5</option>
+                            </select>
+                            </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </fieldset>
+                </td>
+              </tr>
+              {/* STRIDE Assessment */}
+              <tr>
+                <td colSpan={2}>
+                  <fieldset className="tm-inputform-fieldset tm-inputform-fieldset-stride">
+                    <legend className="tm-inputform-legend tm-inputform-legend-stride">
+                      STRIDE Assessment - what can go wrong?
+                    </legend>
+                    <table className="tm-inputform-field-table">
+                      <tbody>
+                        <tr title="Is the threat capable of impersonating a user or system?">
+                          <td className="tm-inputform-field-cell-label"><label>Spoofing:</label></td>
+                          <td>
+                            <textarea
+                              name="spoofing"
+                              value={form.spoofing}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr title="Can the threat modify data in transit or at rest?">
+                          <td className="tm-inputform-field-cell-label"><label>Tampering:</label></td>
+                          <td>
+                            <textarea
+                              name="tampering"
+                              value={form.tampering}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr title="Can the user deny their actions?">
+                          <td className="tm-inputform-field-cell-label"><label>Repudiation:</label></td>
+                          <td>
+                            <textarea
+                              name="repudiation"
+                              value={form.repudiation}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr title="Does the threat expose sensitive information?">
+                          <td className="tm-inputform-field-cell-label"><label>Information Disclosure:</label></td>
+                          <td>
+                            <textarea
+                              name="informationDisclosure"
+                              value={form.informationDisclosure}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr title="Can the threat disrupt service availability?">
+                          <td className="tm-inputform-field-cell-label"><label>Denial of Service:</label></td>
+                          <td>
+                            <textarea
+                              name="denialOfService"
+                              value={form.denialOfService}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr title="Can the threat gain elevated permissions?">
+                          <td className="tm-inputform-field-cell-label"><label>Elevation of Privilege:</label></td>
+                          <td>
+                            <textarea
+                              name="elevationOfPrivilege"
+                              value={form.elevationOfPrivilege}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </fieldset>
+                </td>
+              </tr>
+              {/* DREAD Assessment */}
+              <tr>
+                <td colSpan={3}>
+                  <fieldset className="tm-inputform-fieldset tm-inputform-fieldset-dread">
+                    <legend className="tm-inputform-legend tm-inputform-legend-dread">
+                      DREAD Assessment - how bad can it get?
+                    </legend>
+                    <table className="tm-inputform-field-table">
+                      <tbody>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label-dread"><label>Damage Potential:</label></td>
+                          <td className="tm-inputform-field-cell-tooltip">
+                            <span className="tm-tooltip-container">
+                              <span className="tm-tooltip-icon" tabIndex={0}>?</span>
+                              <div className="tm-tooltip-content">
+                                <ul>
+                                  <li><b>0</b> : No damage</li>
+                                  <li><b>3</b> : Individual user data is compromised, affected, or availability denied</li>
+                                  <li><b>6</b> : All user data is compromised, affected, or availability denied</li>
+                                  <li><b>7</b> : Availability to a service is denied</li>
+                                  <li><b>8</b> : Availability of all services is denied</li>
+                                  <li><b>9</b> : Administration plane and infrastructure data is compromised or affected</li>
+                                  <li><b>10</b> : Complete system or data destruction, failure, or compromise</li>
+                                </ul>
+                              </div>
+                            </span></td>
+                          <td>
+                            <input
+                              title="The potential impact of the threat if it were to materialize?"
+                              type="number" 
+                              name="damagePotential" 
+                              value={form.damagePotential} 
+                              onChange={handleChange} 
+                              className="tm-input" 
+                              min="0"
+                              max="10"
+                            /></td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label-dread"><label>Reproducibility:</label></td>
+                          <td className="tm-inputform-field-cell-tooltip">   
+                            <span className="tm-tooltip-container">
+                              <span className="tm-tooltip-icon" tabIndex={0}>?</span>
+                              <div className="tm-tooltip-content">
+                                <ul>
+                                  <li><b>0</b> : Very hard or impossible, even for administrators. The vulnerability is unstable and statistically unlikely to be reliably exploited</li>
+                                  <li><b>5</b> : One or two steps required, tooling / scripting readily available</li>
+                                  <li><b>10</b> : Unauthenticated users can trivially and reliably exploit using only a web browser</li>
+                                </ul>
+                              </div>
+                            </span></td>
+                          <td>
+                            <input 
+                              title="How easily the threat can be reproduced by an attacker?"
+                              type="number" 
+                              name="reproducibility" 
+                              value={form.reproducibility} 
+                              onChange={handleChange} 
+                              className="tm-input" 
+                              min="0"
+                              max="10"
+                            /></td>
+                        </tr>
+                        <tr title="How easy is it to exploit the threat?">
+                          <td className="tm-inputform-field-cell-label-dread"><label>Exploitability:</label></td>
+                          <td className="tm-inputform-field-cell-tooltip">
+                            <span className="tm-tooltip-container">
+                              <span className="tm-tooltip-icon" tabIndex={0}>?</span>
+                              <div className="tm-tooltip-content">
+                                <ul>
+                                  <li><b>0</b> : N/A Every vulnerability is exploitable, given time and effort. All scores should be 1-10</li>
+                                  <li><b>1</b> : Even with direct knowledge of the vulnerability no viable path for exploitation has been identified</li>
+                                  <li><b>2</b> : Advanced techniques required, custom tooling. Only exploitable by authenticated users</li>
+                                  <li><b>5</b> : Exploit is available/understood, usable with only moderate skill by authenticated users</li>
+                                  <li><b>7</b> : Exploit is available/understood, usable by non-authenticated users</li>
+                                  <li><b>10</b> : A web browser can be used to exploit the vulnerability</li>
+                                </ul>
+                              </div>
+                            </span></td>
+                          <td>
+                            <input 
+                              title="The ease with which the threat can be exploited"
+                              type="number" 
+                              name="exploitability" 
+                              value={form.exploitability} 
+                              onChange={handleChange} 
+                              className="tm-input" 
+                              min="1"
+                              max="10"
+                            /></td>
+                        </tr>
+                        <tr title="How many users are affected by the threat?">
+                          <td className="tm-inputform-field-cell-label-dread"><label>Affected Users:</label></td>
+                          <td className="tm-inputform-field-cell-tooltip">  
+                            <span className="tm-tooltip-container">
+                              <span className="tm-tooltip-icon" tabIndex={0}>?</span>
+                              <div className="tm-tooltip-content">
+                                <ul>
+                                  <li><b>0</b> : No users affected</li>
+                                  <li><b>5</b> : Restricted to users of a specific application / system / site</li>
+                                  <li><b>10</b> : All users impacted</li>
+                                </ul>
+                              </div>
+                            </span></td>
+                          <td>
+                            <input 
+                              title="The number of users or systems that would be affected by the threat"
+                              type="number" 
+                              name="affectedUsers" 
+                              value={form.affectedUsers} 
+                              onChange={handleChange} 
+                              className="tm-input" 
+                              min="0"
+                              max="10"
+                            /></td>
+                        </tr>
+                        <tr title="How easy is it to discover the threat?">
+                          <td className="tm-inputform-field-cell-label-dread"><label>Discoverability:</label></td>
+                          <td className="tm-inputform-field-cell-tooltip">   
+                            <span className="tm-tooltip-container">
+                              <span className="tm-tooltip-icon" tabIndex={0}>?</span>
+                              <div className="tm-tooltip-content">
+                                <ul>
+                                  <li><b>0</b> : Very hard to impossible to detect even given access to source code and privilege access to running systems</li>
+                                  <li><b>5</b> : Can figure it out by guessing or by monitoring network traces</li>
+                                  <li><b>8</b> : Details of faults like this are already in the public domain and can be easily discovered using a search engine</li>
+                                  <li><b>10</b> : The information is visible in the web browser address bar or in a form</li>
+                                </ul>
+                              </div>
+                            </span></td>
+                          <td>
+                            <input 
+                              title="How easily the threat can be discovered by an attacker, default to 10"
+                              type="number" 
+                              name="discoverability" 
+                              value={form.discoverability} 
+                              onChange={handleChange} 
+                              className="tm-input" 
+                              min="1"
+                              max="10"
+                            /></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div style={{ marginTop: "1em", fontWeight: "bold", color: "#7b1fa2" }}>
+                      DREAD Average: {dreadAverage} &nbsp;
+                      DREAD Risk: <span style={{ color: dreadRiskColors[dreadRisk] || "#333" }}>{dreadRisk}</span>
+                    </div>
+                  </fieldset>
+                </td>
+              </tr>
+              {/* Actions */}
+              <tr>
+                <td colSpan={2}>
+                  <fieldset className="tm-inputform-fieldset tm-inputform-fieldset-actions">
+                    <legend className="tm-inputform-legend tm-inputform-legend-actions">
+                      Actions - what are we going to do about it?
+                    </legend>
+                    <table className="tm-inputform-field-table">
+                      <tbody>
+                        <tr title="What actions can be taken to mitigate the threat?">
+                          <td className="tm-inputform-field-cell-label"><label>Suggested Action</label></td>
+                          <td>
+                            <select
+                              name="actions"
+                              value={form.actions}
+                              onChange={handleChange}
+                              className="tm-input"
+                            >
+                              <option value="">Select an action</option>
+                              <option value="mitigate">Mitigate</option>
+                              <option value="eliminate">Eliminate</option>
+                              <option value="transfer">Transfer</option>
+                              <option value="accept">Accept</option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr title="What is the status of the threat?">
+                          <td className="tm-inputform-field-cell-label"><label>Status</label></td>
+                          <td>
+                            <select
+                              name="status"
+                              value={form.status}
+                              onChange={handleChange}
+                              className="tm-input"
+                            >
+                              <option value="">Select a status</option>
+                              <option value="in-progress">In-Progress</option>
+                              <option value="mitigated">Mitigated</option>
+                              <option value="eliminated">Eliminated</option>
+                              <option value="transferred">Transferred</option>
+                              <option value="accepted">Accepted</option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr title="What is the priority of the threat?">
+                          <td className="tm-inputform-field-cell-label"><label>Priority</label></td>
+                          <td>
+                            <select
+                              name="priority"
+                              value={form.priority}
+                              onChange={handleChange}
+                              className="tm-input"
+                            >
+                              <option value="">Select a priority</option>
+                              <option value="low">Low</option>
+                              <option value="moderate">Moderate</option>
+                              <option value="urgent">Urgent</option>
+                              <option value="critical">Critical</option>
+                            </select>
+                          </td> 
+                        </tr>
+                        <tr title="What is the target date for resolving the threat?">
+                          <td className="tm-inputform-field-cell-label"><label>Target Date</label></td>
+                          <td>
+                            <input
+                              type="date"
+                              name="targetDate"
+                              value={form.targetDate}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr title="Who is responsible for addressing the threat?">
+                          <td className="tm-inputform-field-cell-label"><label>Responsible Person</label></td>
+                          <td>
+                            <input
+                              type="text"
+                              name="responsiblePerson"
+                              value={form.responsiblePerson}
+                              onChange={handleChange}
+                              className="tm-input"
+                            />
+                          </td>
+                        </tr>
+                        <tr title="What is the date when the threat was last updated?">
+                          <td className="tm-inputform-field-cell-label"><label>Last Updated</label></td>
+                          <td>
+                            <input
+                              type="date"
+                              name="lastUpdated"
+                              value={form.lastUpdated}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
+                        </tr>
+                        <tr title="Any additional notes or comments about the threat?">
+                          <td className="tm-inputform-field-cell-label"><label>Notes</label></td>
+                          <td>
+                            <textarea
+                              name="notes"
+                              value={form.notes}
+                              onChange={handleChange}
+                              className="tm-input"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </fieldset>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          <div className="tm-flex-gap">
+            <button
+              type="submit"
+              className="tm-btn tm-btn-primary"
+            >
+              {editIndex !== null ? "Update Entry" : "Submit Threat Details"}
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="tm-btn tm-btn-cancel"
+            >
+              Cancel
+            </button>
+          </div>
+      </details>
+    </form>
+  );
+};
+
+export default TMInputForm;
