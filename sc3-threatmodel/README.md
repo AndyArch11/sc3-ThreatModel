@@ -35,8 +35,9 @@ sc3-threatmodel
 │   ├── App.js             # Main App component, imports BIAForm
 │   ├── App.css            # CSS styles for the application
 │   └── components
+│       └── TM.css              # Stylesheets
 │       └── TMForm.js           # Threat Model SPA form
-│       └── TMInputFormForm.js  # Captures threat details
+│       └── TMInputForm.js      # Captures threat details
 │       └── TMIntro.js          # Guidance on performing threat modelling
 │       └── TMReport.js         # Threat Model report
 │       └── TMTable.js          # Threat Model list of threats

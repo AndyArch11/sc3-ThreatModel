@@ -7,7 +7,7 @@ import { exportThreatsToExcel } from "./ExcelExport";
 import "./TM.css";
 
 
-const VERSION = "v0.1.0"; // Update as needed
+const VERSION = "v0.1.1"; // Update as needed
 
 // Helper to get today's date in YYYY-MM-DD format
 const getToday = () => {
@@ -15,6 +15,29 @@ const getToday = () => {
   const month = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${d.getFullYear()}-${month}-${day}`;
+};
+
+// Helper functions to map numeric values to text
+const getDataClassificationText = (value) => {
+  const mapping = {
+    "1": "Public",
+    "2": "Internal", 
+    "3": "Confidential",
+    "4": "Restricted",
+    "5": "Highly Restricted"
+  };
+  return mapping[value] || value || "Not Set";
+};
+
+const getBusinessCriticalityText = (value) => {
+  const mapping = {
+    "1": "Platinum / Tier 1",
+    "2": "Gold / Tier 2",
+    "3": "Silver / Tier 3", 
+    "4": "Bronze / Tier 4",
+    "5": "None / Tier 5"
+  };
+  return mapping[value] || value || "Not Set";
 };
 
 const initialForm = {
@@ -68,11 +91,101 @@ const TMForm = () => {
     "discoverability"
   ];
 
+  // Dark colors for text (used in TMInputForm)
+  const dreadRiskTextColors = {
+    Critical: "#d32f2f",    // Dark red for high contrast text
+    High: "#f57f17",        // Dark orange for high contrast text
+    Medium: "#1976d2",      // Dark blue for high contrast text
+    Low: "#388e3c"          // Dark green for high contrast text
+  };
+
+  // Light colors for backgrounds (used in TMTable)
   const dreadRiskColors = {
-    Critical: "#d32f2f",
-    High: "#fbc02d",
-    Medium: "#388e3c",
-    Low: "#1976d2"
+    Critical: "#f8d7da",    // Light red background
+    High: "#fff3cd",        // Light yellow background
+    Medium: "#d1ecf1",      // Light blue background
+    Low: "#d1eddb"          // Light green background
+  };
+
+  // Data Classification color maps
+  const dataClassificationTextColors = {
+    "Public": "#388e3c",
+    "Internal": "#1976d2", 
+    "Confidential": "#f57f17",
+    "Restricted": "#d32f2f",
+    "Highly Restricted": "#7b1fa2"
+  };
+
+  const dataClassificationBgColors = {
+    "Public": "#e8f5e8",
+    "Internal": "#e3f2fd",
+    "Confidential": "#fff3e0",
+    "Restricted": "#ffebee", 
+    "Highly Restricted": "#f3e5f5"
+  };
+
+  // Business Criticality color maps
+  const businessCriticalityTextColors = {
+    "Platinum / Tier 1": "#7b1fa2",
+    "Gold / Tier 2": "#f57f17",
+    "Silver / Tier 3": "#757575",
+    "Bronze / Tier 4": "#8d6e63",
+    "None / Tier 5": "#9e9e9e"
+  };
+
+  const businessCriticalityBgColors = {
+    "Platinum / Tier 1": "#f3e5f5",
+    "Gold / Tier 2": "#fff3e0",
+    "Silver / Tier 3": "#f5f5f5",
+    "Bronze / Tier 4": "#efebe9",
+    "None / Tier 5": "#fafafa"
+  };
+
+  // Status color maps
+  const statusTextColors = {
+    "In-Progress": "#d29b19ff",
+    "Mitigated": "#1976d2",
+    "Eliminated": "#388e3c",
+    "Transferred": "#ff9800",
+    "Accepted": "#d32f2f"
+  };
+
+  const statusBgColors = {
+    "In-Progress": "#e3f2fd",
+    "Mitigated": "#e3f2fd",
+    "Eliminated": "#e8f5e8",
+    "Transferred": "#fff3e0",
+    "Accepted": "#f8d7da"
+  };
+
+  // Priority color maps
+  const priorityTextColors = {
+    "Low": "#388e3c",
+    "Moderate": "#1976d2",
+    "Urgent": "#ff9800",
+    "Critical": "#d32f2f"
+  };
+
+  const priorityBgColors = {
+    "Low": "#e8f5e8",
+    "Moderate": "#e3f2fd",
+    "Urgent": "#fff3e0",
+    "Critical": "#ffebee"
+  };
+
+  // Suggested Action color maps
+  const actionTextColors = {
+    "Mitigate": "#1976d2",
+    "Eliminate": "#388e3c",
+    "Transfer": "#ff9800",
+    "Accept": "#d32f2f"
+  };
+
+  const actionBgColors = {
+    "Mitigate": "#e3f2fd",
+    "Eliminate": "#e8f5e8",
+    "Transfer": "#fff3e0",
+    "Accept": "#f8d7da"
   };
 
   const getDreadStats = (entry) => {
@@ -112,19 +225,11 @@ const TMForm = () => {
       setFieldsOpen(false); // Collapse form fields after update
     } else {
       setEntries([...entries, form]);
-      // Only pre-fill Threat Model Details fields except Threat ID, Threat Description, Assessed Date
-      if (entries.length > 0) {
-        const last = entries[entries.length - 1];
-        const prefilled = {
-          ...last,
-          threatId: "",
-          threatDescription: "",
-          assessedDate: getToday()
-        };
-        setForm(prefilled);
-      } else {
-        setForm(initialForm);
-      }
+      // Reset to clean form after submit to allow useEffect pre-population on next form open
+      setForm({
+        ...initialForm,
+        assessedDate: getToday()
+      });
       setFieldsOpen(false); // Hide form after submit
       setSubmitted(true);
     }
@@ -306,12 +411,11 @@ const TMForm = () => {
           className="tm-btn tm-btn-primary"
           style={{ marginBottom: "1em" }}
           onClick={() => {
-            setForm(entries.length > 0 ? {
-              ...entries[entries.length - 1],
-              threatId: "",
-              threatDescription: "",
+            // Start with a clean form to trigger useEffect pre-population
+            setForm({
+              ...initialForm,
               assessedDate: getToday()
-            } : initialForm);
+            });
             setEditIndex(null);
             setFieldsOpen(true);
             setSubmitted(false);
@@ -333,7 +437,12 @@ const TMForm = () => {
         fieldsOpen={fieldsOpen}
         setFieldsOpen={setFieldsOpen}
         dreadStats={getDreadStats}
-        dreadRiskColors={dreadRiskColors}
+        dreadRiskColors={dreadRiskTextColors}
+        dataClassificationColors={dataClassificationTextColors}
+        businessCriticalityColors={businessCriticalityTextColors}
+        statusColors={statusTextColors}
+        priorityColors={priorityTextColors}
+        actionColors={actionTextColors}
         lastThreat={entries.length > 0 ? entries[entries.length - 1] : null}
       />
       )}
@@ -344,6 +453,11 @@ const TMForm = () => {
         initialForm={initialForm}
         setForm={setForm}
         dreadRiskColors={dreadRiskColors}
+        dataClassificationColors={dataClassificationBgColors}
+        businessCriticalityColors={businessCriticalityBgColors}
+        statusColors={statusBgColors}
+        priorityColors={priorityBgColors}
+        actionColors={actionBgColors}
         setEditIndex={setEditIndex}
         setSubmitted={setSubmitted}
         setFieldsOpen={setFieldsOpen}
@@ -360,9 +474,21 @@ const TMForm = () => {
         hoveredRowIndex={hoveredRowIndex}
         setHoveredRowIndex={setHoveredRowIndex}
         handleRowClick={handleRowClick}
+        getDataClassificationText={getDataClassificationText}
+        getBusinessCriticalityText={getBusinessCriticalityText}
       />
 
-      <TMReport entries={entries} />
+      <TMReport 
+        entries={entries}
+        getDataClassificationText={getDataClassificationText}
+        getBusinessCriticalityText={getBusinessCriticalityText}
+        dreadRiskTextColors={dreadRiskTextColors}
+        dataClassificationColors={dataClassificationTextColors}
+        businessCriticalityColors={businessCriticalityTextColors}
+        statusColors={statusTextColors}
+        priorityColors={priorityTextColors}
+        actionColors={actionTextColors}
+      />
     </div>
   );
 };

@@ -13,21 +13,51 @@ const TMInputForm = ({
   setFieldsOpen,
   dreadStats,
   dreadRiskColors,
+  dataClassificationColors,
+  businessCriticalityColors,
+  statusColors,
+  priorityColors,
+  actionColors,
   lastThreat,
 }) => {
   // Use centralized DREAD stats from TMForm
   const { dreadAverage, dreadRisk } = dreadStats(form);
 
-  // Robustly pre-fill all fields except Threat ID, Threat Description, and Assessed Date in the Threat Model Details fieldset from lastThreat when starting a new entry
+  // Helper functions to get text values for coloring
+  const getDataClassificationText = (value) => {
+    const mapping = {
+      "1": "Public",
+      "2": "Internal", 
+      "3": "Confidential",
+      "4": "Restricted",
+      "5": "Highly Restricted"
+    };
+    return mapping[value] || "Not Set";
+  };
+
+  const getBusinessCriticalityText = (value) => {
+    const mapping = {
+      "1": "Platinum / Tier 1",
+      "2": "Gold / Tier 2",
+      "3": "Silver / Tier 3", 
+      "4": "Bronze / Tier 4",
+      "5": "None / Tier 5"
+    };
+    return mapping[value] || "Not Set";
+  };
+
+  // Robustly pre-fill all fields except Threat ID and Assessed Date in the Threat Model Details fieldset from lastThreat when starting a new entry
   useEffect(() => {
     if (
       editIndex === null &&
       lastThreat &&
       fieldsOpen &&
-      (!form.threatId && !form.threatDescription && (!form.assessedDate || form.assessedDate === ""))
+      !form.threatId && // Only when there's no threat ID (new entry)
+      form.threatDescription === "" // And no description yet
     ) {
-      // Only pre-fill Threat Model Details fields except Threat ID, Threat Description, Assessed Date
+      // Pre-fill Threat Model Details fields except Threat ID and Assessed Date
       const prefillFields = [
+        "threatDescription",
         "assessedBy",
         "designLocation",
         "source",
@@ -45,7 +75,7 @@ const TMInputForm = ({
       });
       setForm(newForm);
     }
-  }, [editIndex, lastThreat, fieldsOpen, form.threatId, form.threatDescription, form.assessedDate, setForm]);
+  }, [editIndex, lastThreat, fieldsOpen, form.threatId, form.threatDescription, setForm]);
 
   return (    
     <form onSubmit={handleSubmit}>
@@ -60,7 +90,7 @@ const TMInputForm = ({
         }}
       >
         <summary className="tm-inputform-summary">
-          &#x1F6A7; Threat Modelling Form Fields
+          Threat Modelling Form Fields
         </summary>
         <div>
           <table className="tm-inputform-table">
@@ -189,6 +219,10 @@ const TMInputForm = ({
                               value={form.dataClassification}
                               onChange={handleChange}
                               className="tm-input"
+                              style={{ 
+                                color: form.dataClassification ? dataClassificationColors[getDataClassificationText(form.dataClassification)] || "#333" : "#333",
+                                fontWeight: form.dataClassification ? "bold" : "normal"
+                              }}
                             >
                               <option value="">Select...</option>
                               <option value="1">Public</option>
@@ -218,6 +252,10 @@ const TMInputForm = ({
                               value={form.businessCriticality}
                               onChange={handleChange}
                               className="tm-input"
+                              style={{ 
+                                color: form.businessCriticality ? businessCriticalityColors[getBusinessCriticalityText(form.businessCriticality)] || "#333" : "#333",
+                                fontWeight: form.businessCriticality ? "bold" : "normal"
+                              }}
                             >
                               <option value="">Select...</option>
                               <option value="1">Platinum / Tier 1</option>
@@ -475,12 +513,16 @@ const TMInputForm = ({
                               value={form.actions}
                               onChange={handleChange}
                               className="tm-input"
+                              style={{ 
+                                color: form.actions ? actionColors[form.actions] || "#333" : "#333",
+                                fontWeight: form.actions ? "bold" : "normal"
+                              }}
                             >
                               <option value="">Select an action</option>
-                              <option value="mitigate">Mitigate</option>
-                              <option value="eliminate">Eliminate</option>
-                              <option value="transfer">Transfer</option>
-                              <option value="accept">Accept</option>
+                              <option value="Mitigate">Mitigate</option>
+                              <option value="Eliminate">Eliminate</option>
+                              <option value="Transfer">Transfer</option>
+                              <option value="Accept">Accept</option>
                             </select>
                           </td>
                         </tr>
@@ -492,13 +534,17 @@ const TMInputForm = ({
                               value={form.status}
                               onChange={handleChange}
                               className="tm-input"
+                              style={{ 
+                                color: form.status ? statusColors[form.status] || "#333" : "#333",
+                                fontWeight: form.status ? "bold" : "normal"
+                              }}
                             >
                               <option value="">Select a status</option>
-                              <option value="in-progress">In-Progress</option>
-                              <option value="mitigated">Mitigated</option>
-                              <option value="eliminated">Eliminated</option>
-                              <option value="transferred">Transferred</option>
-                              <option value="accepted">Accepted</option>
+                              <option value="In-Progress">In-Progress</option>
+                              <option value="Mitigated">Mitigated</option>
+                              <option value="Eliminated">Eliminated</option>
+                              <option value="Transferred">Transferred</option>
+                              <option value="Accepted">Accepted</option>
                             </select>
                           </td>
                         </tr>
@@ -510,12 +556,16 @@ const TMInputForm = ({
                               value={form.priority}
                               onChange={handleChange}
                               className="tm-input"
+                              style={{ 
+                                color: form.priority ? priorityColors[form.priority] || "#333" : "#333",
+                                fontWeight: form.priority ? "bold" : "normal"
+                              }}
                             >
                               <option value="">Select a priority</option>
-                              <option value="low">Low</option>
-                              <option value="moderate">Moderate</option>
-                              <option value="urgent">Urgent</option>
-                              <option value="critical">Critical</option>
+                              <option value="Low">Low</option>
+                              <option value="Moderate">Moderate</option>
+                              <option value="Urgent">Urgent</option>
+                              <option value="Critical">Critical</option>
                             </select>
                           </td> 
                         </tr>

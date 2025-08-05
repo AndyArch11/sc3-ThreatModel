@@ -1,12 +1,18 @@
 import React from "react";
 import "./TM.css";
+import { exportThreatsToExcel } from "./ExcelExport";
 
-const TMTable = ({ 
+const TMTable = ({
   entries,
   setEntries,
   initialForm,
   setForm,
   dreadRiskColors,
+  dataClassificationColors,
+  businessCriticalityColors,
+  statusColors,
+  priorityColors,
+  actionColors,
   setEditIndex,
   setSubmitted,
   setFieldsOpen,
@@ -22,10 +28,10 @@ const TMTable = ({
   handleMoveProcess,
   hoveredRowIndex,
   setHoveredRowIndex,
-  handleRowClick
- }) => {  
-
-    // Helper function to create new entry
+  handleRowClick,
+  getDataClassificationText,
+  getBusinessCriticalityText
+ }) => {    // Helper function to create new entry
   const handleAddNewProcess = () => {
     setForm(initialForm);
     setEditIndex(null);
@@ -54,6 +60,39 @@ const TMTable = ({
         console.warn('setFieldsOpen is not a function:', setFieldsOpen);
       }
     }
+  };
+
+  // Helper function to handle Excel export
+  const handleExcelExport = () => {
+    exportThreatsToExcel(
+      entries, 
+      getDataClassificationText, 
+      getBusinessCriticalityText, 
+      (filename) => {
+        console.log(`Excel file exported: ${filename}`);
+        // Show success message to user
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #4caf50;
+          color: white;
+          padding: 12px 24px;
+          border-radius: 4px;
+          z-index: 10000;
+          font-family: Arial, sans-serif;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        `;
+        toast.textContent = `✓ Excel file exported: ${filename}`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          if (document.body.contains(toast)) {
+            document.body.removeChild(toast);
+          }
+        }, 3000);
+      }
+    );
   };
 
   const handleDragStart = (e, index) => {
@@ -93,7 +132,7 @@ const TMTable = ({
     <>
       {/* Header stays inside the background card */}
       <h3 className="tm-table-heading">
-          &#x1F6A7; Threat Model Entries
+          Threat Model Entries
       </h3>
       <div className="tm-table-container">
         <div className="tm-table-scroll">
@@ -172,9 +211,9 @@ const TMTable = ({
                   <td className="tm-td-threat">{entry.protocols}</td>
                   <td className="tm-td-threat">{entry.authentication}</td>
                   <td className="tm-td-threat">{entry.dataFlow}</td>
-                  <td className="tm-td-threat">{entry.dataClassification}</td>
+                  <td className="tm-td-threat" style={{ backgroundColor: dataClassificationColors[getDataClassificationText(entry.dataClassification)] || "transparent" }}>{getDataClassificationText(entry.dataClassification)}</td>
                   <td className="tm-td-threat">{entry.businessProcess}</td>
-                  <td className="tm-td-threat">{entry.businessCriticality}</td>
+                  <td className="tm-td-threat" style={{ backgroundColor: businessCriticalityColors[getBusinessCriticalityText(entry.businessCriticality)] || "transparent" }}>{getBusinessCriticalityText(entry.businessCriticality)}</td>
                   <td className="tm-td-stride">{entry.spoofing}</td>
                   <td className="tm-td-stride">{entry.tampering}</td>
                   <td className="tm-td-stride">{entry.repudiation}</td>
@@ -190,9 +229,9 @@ const TMTable = ({
                   <td className="tm-td-dread" style={{ backgroundColor: dreadRiskColors[entry.dreadRisk] || "#333" }}>
                     {entry.dreadRisk}
                   </td>
-                  <td className="tm-td-action">{entry.actions}</td>
-                  <td className="tm-td-action">{entry.status}</td>
-                  <td className="tm-td-action">{entry.priority}</td>
+                  <td className="tm-td-action" style={{ backgroundColor: actionColors[entry.actions] || "transparent" }}>{entry.actions}</td>
+                  <td className="tm-td-action" style={{ backgroundColor: statusColors[entry.status] || "transparent" }}>{entry.status}</td>
+                  <td className="tm-td-action" style={{ backgroundColor: priorityColors[entry.priority] || "transparent" }}>{entry.priority}</td>
                   <td className="tm-td-action">{entry.targetDate}</td>
                   <td className="tm-td-action">{entry.responsiblePerson}</td>
                   <td className="tm-td-action">{entry.lastUpdated}</td>
@@ -245,9 +284,9 @@ const TMTable = ({
           </button>
           <button
             type="button"
-            onClick={handleExport}
+            onClick={handleExcelExport}
             className="tm-btn tm-btn-accent"
-            disabled={true}  // Disable until export function is implemented
+            title="Export threat model data and guidance to Excel"
           >
             📊 Export to Excel
           </button>

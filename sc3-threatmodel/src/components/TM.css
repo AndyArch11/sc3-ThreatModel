@@ -553,3 +553,12 @@
   gap: 12px;
   margin: 1.5em 0 2em 0;
 }
+
+.tm-report-title {
+  color: var(--sc3-primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border-bottom: 2px solid var(--sc3-accent);
+  padding-bottom: 0.5rem;
+}
