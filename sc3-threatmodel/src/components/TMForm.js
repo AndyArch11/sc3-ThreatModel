@@ -7,7 +7,7 @@ import { exportThreatsToExcel } from "./ExcelExport";
 import "./TM.css";
 
 
-const VERSION = "v0.1.1"; // Update as needed
+const VERSION = "v0.1.2"; // Update as needed
 
 // Helper to get today's date in YYYY-MM-DD format
 const getToday = () => {

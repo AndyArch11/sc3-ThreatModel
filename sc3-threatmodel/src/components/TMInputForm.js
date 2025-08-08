@@ -105,7 +105,7 @@ const TMInputForm = ({
                     <table className="tm-inputform-field-table">
                       <tbody>
                         <tr title="A unique identifier for the threat model entry (e.g., a TM-001)">
-                          <td className="tm-inputform-field-cell-label"><label>Threat ID:<span className="tm-required">*</span></label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Threat ID:<span className="tm-required">*</span></label></td>
                           <td>
                             <input
                               type="text"
@@ -117,7 +117,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Threat Description:<span className="tm-required">*</span></label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Threat Description:<span className="tm-required">*</span></label></td>
                           <td>
                             <textarea
                               name="threatDescription"
@@ -128,7 +128,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Assessed By:<span className="tm-required">*</span></label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Assessed By:<span className="tm-required">*</span></label></td>
                           <td>
                             <input
                               type="text"
@@ -140,7 +140,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Assessed Date:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Assessed Date:</label></td>
                           <td>
                             <input
                               type="date"
@@ -151,7 +151,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Design Location (URL):</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Design Location (URL):</label></td>
                           <td>
                             <input
                               type="url"
@@ -162,7 +162,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Source:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Source:</label></td>
                           <td>
                             <textarea
                               name="source"
@@ -172,7 +172,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Target:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Target:</label></td>
                           <td>
                             <textarea
                               name="target"
@@ -182,7 +182,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Protocol(s):</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Protocol(s):</label></td>
                           <td>
                             <textarea
                               name="protocols"
@@ -192,7 +192,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Authentication:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Authentication:</label></td>
                           <td>
                             <textarea
                               name="authentication"
@@ -202,7 +202,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Data Flow:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Data Flow:</label></td>
                           <td>
                             <textarea
                               name="dataFlow"
@@ -212,7 +212,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Data Classification:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Data Classification:</label></td>
                           <td>
                             <select
                               name="dataClassification"
@@ -234,7 +234,7 @@ const TMInputForm = ({
                             </td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Business Process:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Business Process:</label></td>
                           <td>
                             <input
                               type="text"
@@ -245,7 +245,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label"><label>Business Criticality:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Business Criticality:</label></td>
                           <td>
                             <select
                               name="businessCriticality"
@@ -281,7 +281,7 @@ const TMInputForm = ({
                     <table className="tm-inputform-field-table">
                       <tbody>
                         <tr title="Is the threat capable of impersonating a user or system?">
-                          <td className="tm-inputform-field-cell-label"><label>Spoofing:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Spoofing:</label></td>
                           <td>
                             <textarea
                               name="spoofing"
@@ -291,7 +291,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="Can the threat modify data in transit or at rest?">
-                          <td className="tm-inputform-field-cell-label"><label>Tampering:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Tampering:</label></td>
                           <td>
                             <textarea
                               name="tampering"
@@ -301,7 +301,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="Can the user deny their actions?">
-                          <td className="tm-inputform-field-cell-label"><label>Repudiation:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Repudiation:</label></td>
                           <td>
                             <textarea
                               name="repudiation"
@@ -311,7 +311,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="Does the threat expose sensitive information?">
-                          <td className="tm-inputform-field-cell-label"><label>Information Disclosure:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Information Disclosure:</label></td>
                           <td>
                             <textarea
                               name="informationDisclosure"
@@ -321,7 +321,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="Can the threat disrupt service availability?">
-                          <td className="tm-inputform-field-cell-label"><label>Denial of Service:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Denial of Service:</label></td>
                           <td>
                             <textarea
                               name="denialOfService"
@@ -331,7 +331,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="Can the threat gain elevated permissions?">
-                          <td className="tm-inputform-field-cell-label"><label>Elevation of Privilege:</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Elevation of Privilege:</label></td>
                           <td>
                             <textarea
                               name="elevationOfPrivilege"
@@ -355,7 +355,7 @@ const TMInputForm = ({
                     <table className="tm-inputform-field-table">
                       <tbody>
                         <tr>
-                          <td className="tm-inputform-field-cell-label-dread"><label>Damage Potential:</label></td>
+                          <td className="tm-inputform-field-cell-label-dread"><label className="tm-form-label">Damage Potential:</label></td>
                           <td className="tm-inputform-field-cell-tooltip">
                             <span className="tm-tooltip-container">
                               <span className="tm-tooltip-icon" tabIndex={0}>?</span>
@@ -384,7 +384,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr>
-                          <td className="tm-inputform-field-cell-label-dread"><label>Reproducibility:</label></td>
+                          <td className="tm-inputform-field-cell-label-dread"><label className="tm-form-label">Reproducibility:</label></td>
                           <td className="tm-inputform-field-cell-tooltip">   
                             <span className="tm-tooltip-container">
                               <span className="tm-tooltip-icon" tabIndex={0}>?</span>
@@ -409,7 +409,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="How easy is it to exploit the threat?">
-                          <td className="tm-inputform-field-cell-label-dread"><label>Exploitability:</label></td>
+                          <td className="tm-inputform-field-cell-label-dread"><label className="tm-form-label">Exploitability:</label></td>
                           <td className="tm-inputform-field-cell-tooltip">
                             <span className="tm-tooltip-container">
                               <span className="tm-tooltip-icon" tabIndex={0}>?</span>
@@ -437,7 +437,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="How many users are affected by the threat?">
-                          <td className="tm-inputform-field-cell-label-dread"><label>Affected Users:</label></td>
+                          <td className="tm-inputform-field-cell-label-dread"><label className="tm-form-label">Affected Users:</label></td>
                           <td className="tm-inputform-field-cell-tooltip">  
                             <span className="tm-tooltip-container">
                               <span className="tm-tooltip-icon" tabIndex={0}>?</span>
@@ -462,7 +462,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="How easy is it to discover the threat?">
-                          <td className="tm-inputform-field-cell-label-dread"><label>Discoverability:</label></td>
+                          <td className="tm-inputform-field-cell-label-dread"><label className="tm-form-label">Discoverability:</label></td>
                           <td className="tm-inputform-field-cell-tooltip">   
                             <span className="tm-tooltip-container">
                               <span className="tm-tooltip-icon" tabIndex={0}>?</span>
@@ -506,7 +506,7 @@ const TMInputForm = ({
                     <table className="tm-inputform-field-table">
                       <tbody>
                         <tr title="What actions can be taken to mitigate the threat?">
-                          <td className="tm-inputform-field-cell-label"><label>Suggested Action</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Suggested Action</label></td>
                           <td>
                             <select
                               name="actions"
@@ -527,7 +527,7 @@ const TMInputForm = ({
                           </td>
                         </tr>
                         <tr title="What is the status of the threat?">
-                          <td className="tm-inputform-field-cell-label"><label>Status</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Status</label></td>
                           <td>
                             <select
                               name="status"
@@ -549,7 +549,7 @@ const TMInputForm = ({
                           </td>
                         </tr>
                         <tr title="What is the priority of the threat?">
-                          <td className="tm-inputform-field-cell-label"><label>Priority</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Priority</label></td>
                           <td>
                             <select
                               name="priority"
@@ -570,7 +570,7 @@ const TMInputForm = ({
                           </td> 
                         </tr>
                         <tr title="What is the target date for resolving the threat?">
-                          <td className="tm-inputform-field-cell-label"><label>Target Date</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Target Date</label></td>
                           <td>
                             <input
                               type="date"
@@ -581,7 +581,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="Who is responsible for addressing the threat?">
-                          <td className="tm-inputform-field-cell-label"><label>Responsible Person</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Responsible Person</label></td>
                           <td>
                             <input
                               type="text"
@@ -593,7 +593,7 @@ const TMInputForm = ({
                           </td>
                         </tr>
                         <tr title="What is the date when the threat was last updated?">
-                          <td className="tm-inputform-field-cell-label"><label>Last Updated</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Last Updated</label></td>
                           <td>
                             <input
                               type="date"
@@ -604,7 +604,7 @@ const TMInputForm = ({
                             /></td>
                         </tr>
                         <tr title="Any additional notes or comments about the threat?">
-                          <td className="tm-inputform-field-cell-label"><label>Notes</label></td>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Notes</label></td>
                           <td>
                             <textarea
                               name="notes"

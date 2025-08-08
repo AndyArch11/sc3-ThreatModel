@@ -319,6 +319,12 @@
   font-size: 0.95em;
 }
 
+.tm-form-label {
+  font-weight: 600;
+  color: var(--sc3-primary);
+  font-size: 0.9rem;
+}
+
 .tm-inputform-stride {
   font-weight: var(--sc3-btn-font-weight);
 }
