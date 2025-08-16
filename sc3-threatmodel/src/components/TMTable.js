@@ -142,6 +142,7 @@ const TMTable = ({
                 <th colSpan={13} className="tm-th-group-threat">Threat Model Details - what are we working on?</th>
                 <th colSpan={6} className="tm-th-group-stride">STRIDE Assessment - what can go wrong?</th>
                 <th colSpan={7} className="tm-th-group-dread">DREAD Assessment - how bad can it get?</th>
+                <th colSpan={3} className="tm-th-group-cvss">CVSS Assessment - Common Vulnerability Scoring System</th>
                 <th colSpan={7} className="tm-th-group-action">Actions - what are we going to do about it?</th>
               </tr>
               <tr>
@@ -171,6 +172,9 @@ const TMTable = ({
                 <th className="tm-th-dread">Discoverability</th>
                 <th className="tm-th-dread">DREAD Average</th>
                 <th className="tm-th-dread">DREAD Risk</th>
+                <th className="tm-th-cvss">CVSS Vector</th>
+                <th className="tm-th-cvss">CVSS Score</th>
+                <th className="tm-th-cvss">CVSS Classification</th>
                 <th className="tm-th-action">Suggested Action</th>
                 <th className="tm-th-action">Status</th>
                 <th className="tm-th-action">Priority</th>
@@ -229,6 +233,9 @@ const TMTable = ({
                   <td className="tm-td-dread" style={{ backgroundColor: dreadRiskColors[entry.dreadRisk] || "#333" }}>
                     {entry.dreadRisk}
                   </td>
+                  <td className="tm-td-cvss">{entry.cvssVector}</td>
+                  <td className="tm-td-cvss">{entry.cvssScore}</td>
+                  <td className="tm-td-cvss" style={{ backgroundColor: dreadRiskColors[entry.cvssClassification] || "transparent" }}>{entry.cvssClassification}</td>
                   <td className="tm-td-action" style={{ backgroundColor: actionColors[entry.actions] || "transparent" }}>{entry.actions}</td>
                   <td className="tm-td-action" style={{ backgroundColor: statusColors[entry.status] || "transparent" }}>{entry.status}</td>
                   <td className="tm-td-action" style={{ backgroundColor: priorityColors[entry.priority] || "transparent" }}>{entry.priority}</td>

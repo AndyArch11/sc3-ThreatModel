@@ -5,6 +5,63 @@ const TMIntro = () => {
   
   // State for guidance section
   const [showImplementationGuidance, setShowImplementationGuidance] = useState(false);
+  const [showBreakingItDown, setShowBreakingItDown] = useState(false);
+  
+  // State for SVG modal
+  const [showSvgModal, setShowSvgModal] = useState(false);
+  const [svgZoom, setSvgZoom] = useState(1);
+
+  // Back to top function
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  // SVG modal functions
+  const openSvgModal = () => {
+    setShowSvgModal(true);
+    setSvgZoom(1);
+  };
+
+  const closeSvgModal = () => {
+    setShowSvgModal(false);
+    setSvgZoom(1);
+  };
+
+  const zoomIn = () => {
+    setSvgZoom(prev => Math.min(prev + 0.25, 3));
+  };
+
+  const zoomOut = () => {
+    setSvgZoom(prev => Math.max(prev - 0.25, 0.5));
+  };
+
+  const resetZoom = () => {
+    setSvgZoom(1);
+  };
+
+  // Back to top button component
+  const BackToTopButton = () => (
+    <div style={{ textAlign: 'center', margin: '20px 0' }}>
+      <button 
+        onClick={scrollToTop}
+        className="tm-btn tm-btn-secondary"
+        style={{ 
+          fontSize: '0.9rem',
+          padding: '8px 16px',
+          backgroundColor: '#f8f9fa',
+          border: '1px solid #dee2e6',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}
+        title="Back to top of page"
+      >
+        ↑ Back to Top
+      </button>
+    </div>
+  );
 
   return (
     <details className="tm-intro-details">
@@ -178,6 +235,8 @@ const TMIntro = () => {
         <p>Risks associated with outdated threat models include increased vulnerability to attacks, failure to comply with regulations, and potential financial losses. Regularly updating threat models helps mitigate these risks.</p>
         <p>Risks associated with automated threat modeling include over reliance on the tool, security knowledge gaps of those configuring the tool, tool accuracy, potential for false positives/negatives, too noisy to find actual threats, and the need for continuous tuning and validation of models.</p>
 
+        <BackToTopButton />
+
         <h2>🧭 What are we working on?</h2>
         <p>This involves defining the system, application, or feature in scope. It is important to gather architecture diagrams, data flows, and clarify boundaries and assets.</p>
         <p>Asset inventories are crucial for understanding what needs protection. They should include:</p>
@@ -199,7 +258,13 @@ const TMIntro = () => {
           <li><strong>Trust Boundaries:</strong> Represent the lines between different security domains within the system. Trust boundaries help identify areas where different security controls may apply. Trust boundaries are typically depicted as dashed lines.</li>
         </ul>
         <div className="tm-intro-dfd-sample-diagram" style={{ margin: "1em 0" }}>
-          <svg width="300" height="120">            
+          <svg 
+            width="300" 
+            height="120"
+            style={{ cursor: 'pointer' }}
+            onDoubleClick={openSvgModal}
+            title="Double-click to view in full screen with zoom"
+          >            
             {/* Data Store */}
             {/* Top border */}
             <line x1="10" y1="45" x2="70" y2="45" stroke="#333" strokeWidth="2" />
@@ -239,6 +304,8 @@ const TMIntro = () => {
           However, it may not convey if the external entity is trusted to initiate a call to pull the data from a publicly exposed endpoint or if the data is being pushed to the external entity through the external entity's own publicly exposed endpoint.
           Nor does it convey how the data store moves its data to the internal process that is mediating the transfer of the data to the external entity.
           Knowing these interactions will have an impact on how the threats are modelled with respect to this data flow, allowing better identification of entry points, access rights, and potential attack vectors, etc.</p>
+
+        <BackToTopButton />
 
         <h2>🔍 What can go wrong?</h2>
         <p>There are several things that can go wrong in a system, including:</p>
@@ -391,6 +458,8 @@ const TMIntro = () => {
         </table>
         </div>      
 
+        <BackToTopButton />
+
         <h2>🛡️ What are we going to do about that?</h2>
 
         <p>Once the threats are identified, you need to answer the question: "What are we going to do about that?" Similar to responding to risks, suggested Threat Modeling actions:</p>  
@@ -408,6 +477,399 @@ const TMIntro = () => {
         <h2>📝 Did we do a good enough job?</h2>
         <p>Finally, you need to answer the question: "Did we do a good enough job?" This involves reviewing the threat model and ensuring that all identified threats have been addressed.
           It is important to validate that the threats have been mitigated and that the threat model is kept up to date as the system evolves. This can be done through regular reviews, testing, and validation of the threat model.</p>
+
+        <BackToTopButton />
+
+        <div className="tm-intro-guidance-container">
+          <div
+            className="tm-intro-guidance-toggle"
+            onClick={() => setShowBreakingItDown(!showBreakingItDown)}
+          >
+            <h3 className="tm-intro-guidance-title">
+              Breaking It Down
+            </h3>
+            <span className="tm-intro-guidance-toggle-icon">
+              {showBreakingItDown ? "−" : "+"}
+            </span>
+          </div>
+          {showBreakingItDown && (
+            <div className="tm-intro-guidance-content">
+              <p>
+                Threat Modelling is largely about imagining potential threats and vulnerabilities in a system, and proactively addressing them before they can be exploited. 
+                The effectiveness of a threat model depends on the quality of the information gathered, the expertise of the team involved, the commitment to addressing identified threats, and not least, the ability to visualise, anticipate, and imagine potential attack vectors.
+              </p>
+              <p>
+                Threat Model frameworks all share common elements, including the identification of assets, potential threats, vulnerabilities, and the implementation of mitigations. 
+                They often incorporate best practices from various security standards and methodologies, providing a structured approach to threat modeling. However, it can be daunting to navigate the myriad of frameworks and tools available, especially for those new to threat modeling.
+              </p>
+              <p>
+                All threat modelling frameworks are based on the same fundamental principles, but they may differ in their approach, terminology, and specific techniques used.
+              </p>
+              <ul>
+                <li>Protecting the Confidentiality, Integrity, and Availability (CIA Triad) of data assets.</li>
+                <li>Like any good crime novelist or journalist; envisaging the Who, What, Where, When, Why, and How of potential threats.</li>
+              </ul>
+              <p>
+                It is best to start from basic principles and build upon these with more advanced techniques as capabilities mature, keeping in mind that regardless of the specific framework or methodology used, the core principles of threat modeling remain the same.
+              </p>
+              <div className="tm-intro-table-container">
+                <table className="tm-intro-table" style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1em', marginBottom: '1em' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#f8f9fa' }}>
+                    <th style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', textAlign: 'center' }}></th>
+                    <th style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', textAlign: 'center' }}>Target</th>
+                    <th style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', textAlign: 'center' }}>Attacker</th>
+                    <th style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', textAlign: 'center' }}>Defender</th>
+                    <th style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', textAlign: 'center' }}>Framework</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', backgroundColor: '#f8f9fa', verticalAlign: 'top', textAlign: 'center' }}>Who</td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>People</li>
+                          <ul style={{ margin: '4px 0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                            <li>Staff</li>
+                            <li>Privileged Users such as Administrators</li>
+                            <li>Executives</li>
+                            <li>Third-Party Vendors</li>
+                            <li>Business Partners</li>
+                            <li>Customers</li>
+                          </ul>
+                        <li>Critical Assets</li>
+                          <ul style={{ margin: '4px 0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                            <li>Data Assets</li>
+                            <li>System Assets</li>
+                            <li>Physical Assets</li>
+                          </ul>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>Insider Threats</li>
+                        <ul style={{ margin: '4px 0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                          <li>Employees</li>
+                          <li>Contractors</li>
+                          <li>Business Partners</li>
+                          <li>Supply Chain Partners</li>
+                          <li>Third-Party Vendors</li>
+                        </ul>
+                        <li>External Attackers</li>
+                        <ul style={{ margin: '4px 0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                          <li>Disgruntled Customers</li>
+                          <li>Script Kiddies</li>
+                          <li>Individual Hackers / Hacktivists</li>
+                          <li>Hacker Collectives</li>
+                          <li>Criminal Organizations</li>
+                          <li>Competitors</li>
+                          <li>Nation-State Actors</li>
+                        </ul>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>Security Teams</li>
+                        <li>Incident Response Teams</li>
+                        <li>IT Support Staff</li>
+                        <li>Third-Party Vendors</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>Personae non Gratae (PnG)</li>
+                        <li>Threat Actor Profiling</li>
+                        <li>User Story Mapping</li>
+                        <li>Stakeholder Analysis</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', backgroundColor: '#f8f9fa', verticalAlign: 'top', textAlign: 'center' }}>What</td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>Data</li>
+                        <li>Applications</li>
+                        <li>Infrastructure</li>
+                        <li>Processes</li>
+                        <ul style={{ margin: '4px 0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                          <li>Business Processes</li>
+                          <li>Data Flows</li>
+                          <li>Integration Points</li>
+                        </ul>
+                        <li>Technology</li>
+                        <ul style={{ margin: '4px 0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                          <li>Hardware</li>
+                          <li>Software</li>
+                          <li>Network Infrastructure</li>
+                        </ul>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>Data Theft</li>
+                        <li>Data Manipulation</li>
+                        <li>Service Disruption</li>
+                        <li>System Compromise</li>
+                        <li>Reputation Damage</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>Data Protection</li>
+                        <li>System Integrity</li>
+                        <li>Service Availability</li>
+                        <li>Compliance with Regulations</li>
+                        <li>Business Continuity
+                          <ul>
+                            <li>Disaster Recovery</li>
+                            <li>Incident Response</li>
+                            <li>Backup and Restore</li>
+                          </ul>
+                        </li>
+                        <li>Asset Management
+                          <ul>
+                            <li>Inventory Management</li>
+                            <li>Asset Classification</li>
+                            <li>Asset Lifecycle Management</li>
+                            <li>Configuration Management</li>
+                            <li>Patch Management</li>
+                            <li>Vulnerability Management</li>
+                            <li>Change Management</li>
+                            <li>Release Management</li>
+                            <li>Continuous Integration/Continuous Deployment (CI/CD)</li>
+                            <li>Infrastructure as Code (IaC)</li>
+                            <li>Security as Code (SaC)</li>
+                            <li>Hardware Asset Management (HAM) / Software Asset Management (SAM)</li>
+                            <li>License Management</li>
+                            <li>Cloud Asset Management</li>
+                            <li>Certificate Management</li>
+                          </ul>
+                        </li>
+                        <li>Security Awareness
+                          <ul>
+                            <li>Training Programs</li>
+                            <li>Phishing Simulations</li>
+                            <li>Security Policies</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>Data Classification Frameworks</li>
+                        <li>Application Security Frameworks</li>
+                        <li>Infrastructure Security Frameworks</li>
+                        <li>Process Mapping and Analysis Tools</li>
+                        <li>CVSS (Common Vulnerability Scoring System)</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', backgroundColor: '#f8f9fa', verticalAlign: 'top', textAlign: 'center' }}>Where</td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>On-Premises</li>
+                        <li>Cloud Environments</li>
+                        <li>Hybrid Environments</li>
+                        <li>Third-Party Systems</li>
+                        <li>Mobile Devices</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>Network Perimeter</li>
+                        <li>Endpoints</li>
+                        <li>Cloud Services</li>
+                        <li>Third-Party Integrations</li>
+                        <li>Mobile Applications</li>
+                        <li>OT / IoT Devices</li>
+                        <li>Embedded Systems</li>
+                        <li>Legacy Systems</li>
+                        <li>Email Systems</li>
+                        <li>Workstations, Laptops, Desktops</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>Network Segmentation</li>
+                        <li>Access Controls</li>
+                        <li>Endpoint Protection</li>
+                        <li>Cloud Security Posture Management (CSPM)</li>
+                        <li>Zero Trust Security</li>
+                        <li>Mobile Device Management (MDM)</li>
+                        <li>Mobile Application Management (MAM)</li>
+                        <li>Data Loss Prevention (DLP)</li>
+                        <li>OT / IoT Security Solutions</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>STRIDE</li>
+                        <li>LINDDUN</li>
+                        <li>PASTA</li>
+                        <li>OCTAVE</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', backgroundColor: '#f8f9fa', verticalAlign: 'top', textAlign: 'center' }}>When</td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>During Design Phase</li>
+                        <li>During Development Phase</li>
+                        <li>During Deployment Phase</li>
+                        <li>During Maintenance Phase</li>
+                        <li>During Operational Phase</li>
+                        <li>During Incident Response</li>
+                        <li>On Market Announcement</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>Vulnerability Detected</li>
+                        <li>Following a Security Breach</li>
+                        <li>Political Event</li>
+                        <li>Negative Publicity</li>
+                        <li>Regulatory Change</li>
+                        <li>Market Competition</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>24/7</li>
+                        <li>Red Team / Blue Team Exercises</li>
+                        <li>Incident Response Drills</li>
+                        <li>Threat Hunting</li>
+                        <li>Continuous Monitoring</li>
+                        <li>Security Audits</li>
+                        <li>Penetration Testing</li>
+                        <li>Responding to an Incident</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>SDL (Security Development Lifecycle)</li>
+                        <li>DevSecOps Integration</li>
+                        <li>Continuous Risk Assessment</li>
+                        <li>Incident Response Planning</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', backgroundColor: '#f8f9fa', verticalAlign: 'top', textAlign: 'center' }}>Why</td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>Access to Sensitive Data</li>
+                        <li>Access to Privileged Permissions</li>
+                        <li>Opportunistic</li>
+                        <li>Vulnerable</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>Boredom</li>
+                        <li>Personal Gratification</li>
+                        <li>Curiosity</li>
+                        <li>Financial Gain</li>
+                        <li>Revenge / Malice</li>
+                        <li>Ideological Beliefs</li>
+                        <li>Thrill-Seeking</li>
+                        <li>Competition</li>
+                        <li>Reputation</li>
+                        <li>Anarchy</li>
+                        <li>Disruption of Services</li>
+                        <li>Other</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>To Protect Sensitive Data</li>
+                        <li>To Ensure System Integrity</li>
+                        <li>To Maintain Service Availability</li>
+                        <li>To Comply with Regulations</li>
+                        <li>To Mitigate Risks</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>Attack Tree Analysis</li>
+                        <li>Motivation Modeling</li>
+                        <li>Kill Chain Analysis</li>
+                        <li>CAPEC (Common Attack Pattern Enumeration)</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', fontWeight: 'bold', backgroundColor: '#f8f9fa', verticalAlign: 'top', textAlign: 'center' }}>How</td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>Vulnerable Configurations</li>
+                        <li>Weak Authentication</li>
+                        <li>Poor Security Practices</li>
+                        <li>Inadequate Monitoring</li>
+                        <li>Human Factors</li>
+                          <ul>
+                            <li>Scammed</li>
+                            <li>Identity Theft</li>
+                            <li>Weak Passwords</li>
+                            <li>Shared Credentials</li>
+                            <li>Passwords on Sticky Notes</li>
+                          </ul>
+                        <li>Technical Debt</li>
+                          <ul>
+                            <li>Jailbroken Devices</li>
+                            <li>Unpatched Software</li>
+                            <li>Misconfigured Settings</li>
+                            <li>Legacy Systems</li>
+                          </ul>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>Hacked passwords</li>
+                        <li>Phishing attacks</li>
+                        <li>Social engineering</li>
+                        <li>Credential stuffing</li>
+                        <li>Brute force attacks</li>
+                        <li>Application vulnerabilities</li>
+                        <li>Misconfigured cloud settings</li>
+                        <li>Unpatched software</li>
+                        <li>Malware infections</li>
+                        <li>Dark Web exploits</li>
+                        <li>Zero-Day Exploits</li>
+                        <li>Insider threats</li>
+                        <li>Supply chain attacks</li>
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>Antivirus/Antimalware Solutions</li>
+                        <li>Firewalls</li>
+                        <li>Intrusion Detection Systems (IDS) / Intrusion Prevention Systems (IPS)</li>
+                        <li>Security Information and Event Management (SIEM)</li>
+                        <li>Security Orchestration, Automation, and Response (SOAR)</li>
+                        <li>Data Loss Prevention (DLP)</li>
+                        <li>Endpoint Detection and Response (EDR)</li>
+                        <li>Threat Intelligence Platforms</li>                        
+                      </ul>
+                    </td>
+                    <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
+                      <ul>
+                        <li>STRIDE</li>
+                        <li>PASTA</li>
+                        <li>OCTAVE</li>
+                        <li>VAST</li>
+                        <li>CVSS Scoring Methodology</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="tm-intro-guidance-container">
           <div
@@ -944,6 +1406,7 @@ const TMIntro = () => {
               <p>
                 Selection of frameworks and tools should be based on your organisation's maturity, regulatory requirements, and the specific context of your systems and business processes.
               </p>
+
               <h3 role="doc-subtitle" style={{marginTop: '2em'}}>⚠️ Important Considerations</h3>
               <p>
                   Threat modeling is not a one-time activity but an ongoing process that should be revisited regularly as systems change and new threats emerge. 
@@ -962,12 +1425,190 @@ const TMIntro = () => {
           </div>
           )}
         </div>
+
         <p>
             <strong>Note:</strong> This form is a simplified version of a threat modeling process and may not cover all aspects of a comprehensive threat model. 
             It is recommended to use this form in conjunction with other security practices and frameworks. Subject to your organisation's specific requirements and context, also consider exploring Threat Modeling as a Service (TMaaS) offerings.
         </p>
         <p><b>Disclaimer:</b> The information provided here is for general informational purposes only and will require adaptation for specific businesses and maturity capabilities and is not intended as legal advice. 
           Please consult with a qualified legal professional for specific legal advice tailored to your situation.</p>
+        <BackToTopButton />
+        <hr />
+
+        {/* SVG Modal */}
+        {showSvgModal && (
+          <div 
+            className="tm-svg-modal-overlay" 
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              zIndex: 9999,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '20px'
+            }}
+            onClick={closeSvgModal}
+          >
+            <div 
+              className="tm-svg-modal-content"
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                padding: '20px',
+                maxWidth: '90vw',
+                maxHeight: '90vh',
+                position: 'relative',
+                overflow: 'auto'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                marginBottom: '20px',
+                borderBottom: '1px solid #dee2e6',
+                paddingBottom: '10px'
+              }}>
+                <h3 style={{ margin: 0, color: '#003366' }}>Data Flow Diagram (DFD) Sample</h3>
+                <button 
+                  onClick={closeSvgModal}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '24px',
+                    cursor: 'pointer',
+                    padding: '5px',
+                    color: '#666'
+                  }}
+                  title="Close"
+                >
+                  ×
+                </button>
+              </div>
+
+              {/* Zoom Controls */}
+              <div style={{ 
+                display: 'flex', 
+                gap: '10px', 
+                marginBottom: '20px',
+                justifyContent: 'center'
+              }}>
+                <button 
+                  onClick={zoomOut}
+                  style={{
+                    padding: '8px 12px',
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                  title="Zoom Out"
+                >
+                  −
+                </button>
+                <button 
+                  onClick={resetZoom}
+                  style={{
+                    padding: '8px 12px',
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                  title="Reset Zoom"
+                >
+                  {Math.round(svgZoom * 100)}%
+                </button>
+                <button 
+                  onClick={zoomIn}
+                  style={{
+                    padding: '8px 12px',
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                  title="Zoom In"
+                >
+                  +
+                </button>
+              </div>
+
+              {/* SVG Container */}
+              <div style={{ 
+                textAlign: 'center',
+                overflow: 'auto',
+                maxHeight: '60vh'
+              }}>
+                <svg 
+                  width={300 * svgZoom} 
+                  height={120 * svgZoom}
+                  style={{ 
+                    transform: `scale(${svgZoom})`,
+                    transformOrigin: 'center',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '4px',
+                    backgroundColor: 'white'
+                  }}
+                >            
+                  {/* Data Store */}
+                  {/* Top border */}
+                  <line x1="10" y1="45" x2="70" y2="45" stroke="#333" strokeWidth="2" />
+                  {/* Bottom border */}
+                  <line x1="10" y1="75" x2="70" y2="75" stroke="#333" strokeWidth="2" />
+                  {/* Fill the rectangle area */}
+                  <rect x="10" y="45" width="60" height="30" fill="#fff" stroke="none" />
+                  <text x="40" y="65" fontSize="12" textAnchor="middle" fill="#000" >Data Store</text>
+
+                  {/* Data Flow Arrow */}
+                  <line x1="70" y1="60" x2="120" y2="60" stroke="#d0021b" strokeWidth="1" />
+                  <polygon points="120,60 115,55 115,65" fill="#d0021b" />
+
+                  {/* Process */}
+                  <circle cx="145" cy="60" r="25" fill="#dfefca" stroke="#444" strokeWidth="0.5" />
+                  <text x="145" y="65" fontSize="12" textAnchor="middle" fill="#000">Process</text>
+
+                  {/* Data Flow Arrow */}
+                  <line x1="170" y1="60" x2="220" y2="60" stroke="#d0021b" strokeWidth="1" />
+                  <polygon points="220,60 215,55 215,65" fill="#d0021b" />
+
+                  {/* External Entity */}
+                  <rect x="220" y="40" width="40" height="40" fill="#f6caca" stroke="#444" strokeWidth="0.5" />
+                  <text x="240" y="35" fontSize="12" textAnchor="middle">Entity</text>
+
+                  {/* Trust Boundary */}
+                  <line x1="195" y1="20" x2="195" y2="90" stroke="#9013fe" strokeWidth="2" strokeDasharray="6,4" />
+                  <text x="195" y="100" fontSize="12" textAnchor="middle" fill="#9013fe">Trust Boundary</text>
+                </svg>
+              </div>
+
+              {/* Legend */}
+              <div style={{ 
+                marginTop: '20px',
+                padding: '15px',
+                backgroundColor: '#f8f9fa',
+                borderRadius: '4px',
+                fontSize: '14px'
+              }}>
+                <h4 style={{ margin: '0 0 10px 0', color: '#003366' }}>DFD Elements:</h4>
+                <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                  <li><strong>Data Store:</strong> Open-ended rectangles for data storage</li>
+                  <li><strong>Process:</strong> Circles/ovals for data transformation</li>
+                  <li><strong>External Entity:</strong> Squares/rectangles for external actors</li>
+                  <li><strong>Data Flow:</strong> Arrows showing data movement</li>
+                  <li><strong>Trust Boundary:</strong> Dashed lines between security domains</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
     </details>
   );
 };

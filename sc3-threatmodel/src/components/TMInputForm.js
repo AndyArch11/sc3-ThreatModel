@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./TM.css";
 
 const TMInputForm = ({ 
@@ -20,6 +20,9 @@ const TMInputForm = ({
   actionColors,
   lastThreat,
 }) => {
+  // State for view mode (basic or extended)
+  const [viewMode, setViewMode] = useState('basic');
+
   // Use centralized DREAD stats from TMForm
   const { dreadAverage, dreadRisk } = dreadStats(form);
 
@@ -77,6 +80,34 @@ const TMInputForm = ({
     }
   }, [editIndex, lastThreat, fieldsOpen, form.threatId, form.threatDescription, setForm]);
 
+  // Automatically set CVSS classification based on score
+  useEffect(() => {
+    if (form.cvssScore !== "" && form.cvssScore !== undefined && form.cvssScore !== null) {
+      const score = parseFloat(form.cvssScore);
+      if (!isNaN(score)) {
+        let classification = "";
+        if (score === 0.0) {
+          classification = "None";
+        } else if (score >= 0.1 && score <= 3.9) {
+          classification = "Low";
+        } else if (score >= 4.0 && score <= 6.9) {
+          classification = "Medium";
+        } else if (score >= 7.0 && score <= 8.9) {
+          classification = "High";
+        } else if (score >= 9.0 && score <= 10.0) {
+          classification = "Critical";
+        }
+        
+        if (classification !== "" && form.cvssClassification !== classification) {
+          setForm(prevForm => ({
+            ...prevForm,
+            cvssClassification: classification
+          }));
+        }
+      }
+    }
+  }, [form.cvssScore, form.cvssClassification, setForm]);
+
   return (    
     <form onSubmit={handleSubmit}>
       <details
@@ -92,6 +123,34 @@ const TMInputForm = ({
         <summary className="tm-inputform-summary">
           Threat Modelling Form Fields
         </summary>
+
+        {/* View Mode Toggle */}
+        <div className="tm-viewmode-container">
+          <label>
+            View Mode:
+          </label>
+          <div className="tm-viewmode-options">
+            <label>
+              <input
+                type="radio"
+                value="basic"
+                checked={viewMode === 'basic'}
+                onChange={(e) => setViewMode(e.target.value)}
+              />
+              Basic (Essential fields only)
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="extended"
+                checked={viewMode === 'extended'}
+                onChange={(e) => setViewMode(e.target.value)}
+              />
+              Extended (All fields)
+            </label>
+          </div>
+        </div>
+
         <div>
           <table className="tm-inputform-table">
             <tbody>
@@ -127,90 +186,104 @@ const TMInputForm = ({
                               className="tm-input"
                             /></td>
                         </tr>
-                        <tr>
-                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Assessed By:<span className="tm-required">*</span></label></td>
-                          <td>
-                            <input
-                              type="text"
-                              name="assessedBy"
-                              value={form.assessedBy}
-                              onChange={handleChange}
-                              required
-                              className="tm-input"
-                            /></td>
-                        </tr>
-                        <tr>
-                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Assessed Date:</label></td>
-                          <td>
-                            <input
-                              type="date"
-                              name="assessedDate"
-                              value={form.assessedDate}
-                              onChange={handleChange}
-                              className="tm-input"
-                            /></td>
-                        </tr>
-                        <tr>
-                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Design Location (URL):</label></td>
-                          <td>
-                            <input
-                              type="url"
-                              name="designLocation"
-                              value={form.designLocation}
-                              onChange={handleChange}
-                              className="tm-input"
-                            /></td>
-                        </tr>
-                        <tr>
-                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Source:</label></td>
-                          <td>
-                            <textarea
-                              name="source"
-                              value={form.source}
-                              onChange={handleChange}
-                              className="tm-input"
-                            /></td>
-                        </tr>
-                        <tr>
-                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Target:</label></td>
-                          <td>
-                            <textarea
-                              name="target"
-                              value={form.target}
-                              onChange={handleChange}
-                              className="tm-input"
-                            /></td>
-                        </tr>
-                        <tr>
-                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Protocol(s):</label></td>
-                          <td>
-                            <textarea
-                              name="protocols"
-                              value={form.protocols}
-                              onChange={handleChange}
-                              className="tm-input"
-                            /></td>
-                        </tr>
-                        <tr>
-                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Authentication:</label></td>
-                          <td>
-                            <textarea
-                              name="authentication"
-                              value={form.authentication}
-                              onChange={handleChange}
-                              className="tm-input"
-                            /></td>
-                        </tr>
-                        <tr>
-                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Data Flow:</label></td>
-                          <td>
-                            <textarea
-                              name="dataFlow"
-                              value={form.dataFlow}
-                              onChange={handleChange}
-                              className="tm-input"
-                            /></td>
-                        </tr>
+                        {viewMode === 'extended' && (
+                          <>
+                            <tr>
+                              <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Assessed By:</label></td>
+                              <td>
+                                <input
+                                  type="text"
+                                  name="assessedBy"
+                                  value={form.assessedBy}
+                                  onChange={handleChange}
+                                  className="tm-input"
+                                /></td>
+                            </tr>
+                            <tr>
+                              <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Assessed Date:</label></td>
+                              <td>
+                                <input
+                                  type="date"
+                                  name="assessedDate"
+                                  value={form.assessedDate}
+                                  onChange={handleChange}
+                                  className="tm-input"
+                                /></td>
+                            </tr>
+                            <tr>
+                              <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Design Location (URL):</label></td>
+                              <td>
+                                <input
+                                  type="url"
+                                  name="designLocation"
+                                  value={form.designLocation}
+                                  onChange={handleChange}
+                                  className="tm-input"
+                                /></td>
+                            </tr>
+                            <tr>
+                              <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Source:</label></td>
+                              <td>
+                                <textarea
+                                  name="source"
+                                  value={form.source}
+                                  onChange={handleChange}
+                                  className="tm-input"
+                                /></td>
+                            </tr>
+                            <tr>
+                              <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Target:</label></td>
+                              <td>
+                                <textarea
+                                  name="target"
+                                  value={form.target}
+                                  onChange={handleChange}
+                                  className="tm-input"
+                                /></td>
+                            </tr>
+                            <tr>
+                              <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Protocol(s):</label></td>
+                              <td>
+                                <textarea
+                                  name="protocols"
+                                  value={form.protocols}
+                                  onChange={handleChange}
+                                  className="tm-input"
+                                /></td>
+                            </tr>
+                            <tr>
+                              <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Authentication:</label></td>
+                              <td>
+                                <textarea
+                                  name="authentication"
+                                  value={form.authentication}
+                                  onChange={handleChange}
+                                  className="tm-input"
+                                /></td>
+                            </tr>
+                            <tr>
+                              <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Data Flow:</label></td>
+                              <td>
+                                <textarea
+                                  name="dataFlow"
+                                  value={form.dataFlow}
+                                  onChange={handleChange}
+                                  className="tm-input"
+                                /></td>
+                            </tr>
+                            <tr>
+                              <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Business Process:</label></td>
+                              <td>
+                                <input
+                                  type="text"
+                                  name="businessProcess"
+                                  value={form.businessProcess}
+                                  onChange={handleChange}
+                                  className="tm-input"
+                                /></td>
+                            </tr>
+                          </>
+                        )}                        
                         <tr>
                           <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Data Classification:</label></td>
                           <td>
@@ -232,17 +305,6 @@ const TMInputForm = ({
                               <option value="5">Highly Restricted</option>
                             </select>
                             </td>
-                        </tr>
-                        <tr>
-                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Business Process:</label></td>
-                          <td>
-                            <input
-                              type="text"
-                              name="businessProcess"
-                              value={form.businessProcess}
-                              onChange={handleChange}
-                              className="tm-input"
-                            /></td>
                         </tr>
                         <tr>
                           <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Business Criticality:</label></td>
@@ -496,6 +558,116 @@ const TMInputForm = ({
                   </fieldset>
                 </td>
               </tr>
+              {/* CVSS Assessment - Available in Basic mode */}
+              <tr>
+                <td colSpan={2}>
+                  <fieldset className="tm-inputform-fieldset tm-inputform-fieldset-cvss">
+                    <legend className="tm-inputform-legend tm-inputform-legend-cvss">
+                      CVSS Assessment - Common Vulnerability Scoring System (Alternative to DREAD)
+                    </legend>
+                    <div style={{ marginBottom: '10px', fontSize: '0.9rem', color: '#666' }}>
+                      Use the <a href="https://www.first.org/cvss/calculator/4-0" target="_blank" rel="noopener noreferrer" style={{ color: '#007bff', textDecoration: 'underline' }}>CVSS 4.0 Calculator</a> to generate vector strings and scores.
+                    </div>
+                    <table className="tm-inputform-field-table">
+                      <tbody>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">CVSS Vector String:</label></td>
+                          <td className="tm-inputform-field-cell-tooltip">
+                            <span className="tm-tooltip-container">
+                              <span className="tm-tooltip-icon" tabIndex={0}>?</span>
+                              <div className="tm-tooltip-content">
+                                <p>CVSS vector string in format:</p>
+                                <p><b>CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:N/SI:N/SA:N</b></p>
+                                <p>Use the CVSS Calculator link above to generate this string.</p>
+                              </div>
+                            </span>
+                          </td>
+                          <td>
+                            <input
+                              title="CVSS vector string from CVSS Calculator"
+                              type="text" 
+                              name="cvssVector" 
+                              value={form.cvssVector || ''} 
+                              onChange={handleChange} 
+                              className="tm-input" 
+                              placeholder="CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:N/SI:N/SA:N"
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">CVSS Score:</label></td>
+                          <td className="tm-inputform-field-cell-tooltip">
+                            <span className="tm-tooltip-container">
+                              <span className="tm-tooltip-icon" tabIndex={0}>?</span>
+                              <div className="tm-tooltip-content">
+                                <p>Numeric CVSS score from 0.0 to 10.0</p>
+                                <ul>
+                                  <li><b>0.0</b>: None</li>
+                                  <li><b>0.1-3.9</b>: Low</li>
+                                  <li><b>4.0-6.9</b>: Medium</li>
+                                  <li><b>7.0-8.9</b>: High</li>
+                                  <li><b>9.0-10.0</b>: Critical</li>
+                                </ul>
+                              </div>
+                            </span>
+                          </td>
+                          <td>
+                            <input
+                              title="CVSS numeric score (0.0-10.0) from CVSS Calculator"
+                              type="number" 
+                              name="cvssScore" 
+                              value={form.cvssScore || ''} 
+                              onChange={handleChange} 
+                              className="tm-input" 
+                              min="0.0"
+                              max="10.0"
+                              step="0.1"
+                              placeholder="0.0"
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="tm-inputform-field-cell-label"><label className="tm-form-label">CVSS Classification:</label></td>
+                          <td className="tm-inputform-field-cell-tooltip">
+                            <span className="tm-tooltip-container">
+                              <span className="tm-tooltip-icon" tabIndex={0}>?</span>
+                              <div className="tm-tooltip-content">
+                                <p>CVSS severity rating based on score:</p>
+                                <ul>
+                                  <li><b>None</b>: 0.0</li>
+                                  <li><b>Low</b>: 0.1-3.9</li>
+                                  <li><b>Medium</b>: 4.0-6.9</li>
+                                  <li><b>High</b>: 7.0-8.9</li>
+                                  <li><b>Critical</b>: 9.0-10.0</li>
+                                </ul>
+                              </div>
+                            </span>
+                          </td>
+                          <td>
+                            <select
+                              name="cvssClassification"
+                              value={form.cvssClassification || ''}
+                              onChange={handleChange}
+                              className="tm-input"
+                              style={{ 
+                                color: form.cvssClassification ? dreadRiskColors[form.cvssClassification] || "#333" : "#333",
+                                fontWeight: form.cvssClassification ? "bold" : "normal"
+                              }}
+                            >
+                              <option value="">Select classification...</option>
+                              <option value="None">None (0.0)</option>
+                              <option value="Low">Low (0.1-3.9)</option>
+                              <option value="Medium">Medium (4.0-6.9)</option>
+                              <option value="High">High (7.0-8.9)</option>
+                              <option value="Critical">Critical (9.0-10.0)</option>
+                            </select>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </fieldset>
+                </td>
+              </tr>
               {/* Actions */}
               <tr>
                 <td colSpan={2}>
@@ -505,6 +677,8 @@ const TMInputForm = ({
                     </legend>
                     <table className="tm-inputform-field-table">
                       <tbody>
+                        {/* Extended action fields - only show in Extended mode */}
+                        {viewMode === 'extended' && (
                         <tr title="What actions can be taken to mitigate the threat?">
                           <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Suggested Action</label></td>
                           <td>
@@ -526,6 +700,8 @@ const TMInputForm = ({
                             </select>
                           </td>
                         </tr>
+                        )}
+                        {/* Basic action fields - always show */}
                         <tr title="What is the status of the threat?">
                           <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Status</label></td>
                           <td>
@@ -569,6 +745,9 @@ const TMInputForm = ({
                             </select>
                           </td> 
                         </tr>
+                        {/* Extended action fields - only show in Extended mode */}
+                        {viewMode === 'extended' && (
+                        <>
                         <tr title="What is the target date for resolving the threat?">
                           <td className="tm-inputform-field-cell-label"><label className="tm-form-label">Target Date</label></td>
                           <td>
@@ -614,6 +793,8 @@ const TMInputForm = ({
                             />
                           </td>
                         </tr>
+                        </>
+                        )}
                       </tbody>
                     </table>
                   </fieldset>

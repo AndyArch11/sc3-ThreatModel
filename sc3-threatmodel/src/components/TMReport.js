@@ -12,47 +12,66 @@ const TMReport = ({
   priorityColors,
   actionColors
 }) => {
-  // Debug: Log the actual entries to see what DREAD values we have
+  // Helper function to determine risk level (CVSS first, then DREAD)
+  const getRiskLevel = (entry) => {
+    // Prioritize CVSS Classification if available
+    if (entry.cvssClassification && entry.cvssClassification.trim() !== '') {
+      const cvssClassification = entry.cvssClassification.trim();
+      // Normalize CVSS classification to standard risk levels
+      switch (cvssClassification.toLowerCase()) {
+        case 'critical':
+        case 'very high':
+          return "Critical";
+        case 'high':
+          return "High";
+        case 'medium':
+        case 'moderate':
+          return "Medium";
+        case 'low':
+        case 'very low':
+          return "Low";
+        default:
+          // If it's a valid CVSS classification but not recognized, use as-is
+          return cvssClassification;
+      }
+    }
+    
+    // Fall back to DREAD calculation
+    const dreadSum = Number(entry.damagePotential || 0) + Number(entry.reproducibility || 0) + 
+                     Number(entry.exploitability || 1) + Number(entry.affectedUsers || 0) + Number(entry.discoverability || 10);
+    
+    if (dreadSum >= 40) return "Critical";
+    if (dreadSum >= 25) return "High";
+    if (dreadSum >= 12) return "Medium";
+    return "Low";
+  };
+
+  // Debug: Log the actual entries to see what CVSS and DREAD values we have
   console.log("TMReport - entries:", entries);
   entries.forEach((entry, index) => {
     const dreadSum = Number(entry.damagePotential || 0) + Number(entry.reproducibility || 0) + 
                      Number(entry.exploitability || 1) + Number(entry.affectedUsers || 0) + Number(entry.discoverability || 10);
     console.log(`Entry ${index}:`, {
+      cvssClassification: entry.cvssClassification,
+      cvssScore: entry.cvssScore,
       damagePotential: entry.damagePotential,
       reproducibility: entry.reproducibility,
       exploitability: entry.exploitability,
       affectedUsers: entry.affectedUsers,
       discoverability: entry.discoverability,
       dreadSum,
-      calculatedRisk: dreadSum >= 40 ? "Critical" : dreadSum >= 25 ? "High" : dreadSum >= 12 ? "Medium" : "Low"
+      dreadRisk: dreadSum >= 40 ? "Critical" : dreadSum >= 25 ? "High" : dreadSum >= 12 ? "Medium" : "Low",
+      finalRisk: getRiskLevel(entry),
+      usingCVSS: entry.cvssClassification && entry.cvssClassification.trim() !== ''
     });
   });
 
-  // Calculate summary statistics
+  // Calculate summary statistics using the new risk determination logic
   const totalThreats = entries.length;
-  const criticalThreats = entries.filter(entry => {
-    const dreadSum = Number(entry.damagePotential || 0) + Number(entry.reproducibility || 0) + 
-                     Number(entry.exploitability || 1) + Number(entry.affectedUsers || 0) + Number(entry.discoverability || 10);
-    return dreadSum >= 40;
-  }).length;
-  
-  const highThreats = entries.filter(entry => {
-    const dreadSum = Number(entry.damagePotential || 0) + Number(entry.reproducibility || 0) + 
-                     Number(entry.exploitability || 1) + Number(entry.affectedUsers || 0) + Number(entry.discoverability || 10);
-    return dreadSum >= 25 && dreadSum < 40;
-  }).length;
-
-  const mediumThreats = entries.filter(entry => {
-    const dreadSum = Number(entry.damagePotential || 0) + Number(entry.reproducibility || 0) + 
-                     Number(entry.exploitability || 1) + Number(entry.affectedUsers || 0) + Number(entry.discoverability || 10);
-    return dreadSum >= 12 && dreadSum < 25;
-  }).length;
-
-  const lowThreats = entries.filter(entry => {
-    const dreadSum = Number(entry.damagePotential || 0) + Number(entry.reproducibility || 0) + 
-                     Number(entry.exploitability || 1) + Number(entry.affectedUsers || 0) + Number(entry.discoverability || 10);
-    return dreadSum < 12;
-  }).length;
+  const criticalThreats = entries.filter(entry => getRiskLevel(entry) === "Critical").length;
+  const highThreats = entries.filter(entry => getRiskLevel(entry) === "High").length;
+  const mediumThreats = entries.filter(entry => getRiskLevel(entry) === "Medium").length;
+  const lowThreats = entries.filter(entry => getRiskLevel(entry) === "Low").length;
 
   // Create donut chart data
   const riskData = [
@@ -268,7 +287,11 @@ const TMReport = ({
 
   // Count threats with suggested actions
   const threatsWithActions = entries.filter(entry => entry.actions && entry.actions.trim() !== '').length;
-  const threatsWithoutActions = totalThreats - threatsWithActions;
+  const threatsWithoutActions = totalThreats - threatsWithActions;  
+
+  if (entries.length === 0) {
+    return null;
+  }
 
   return (
     <details className="tm-intro-details">
