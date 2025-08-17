@@ -72,11 +72,17 @@ const TMInputForm = ({
         "businessProcess",
         "businessCriticality"
       ];
-      const newForm = { ...form };
+      
+      // Create update object with only the fields we want to prefill
+      const formUpdates = {};
       prefillFields.forEach(field => {
-        newForm[field] = lastThreat[field] !== undefined ? lastThreat[field] : (typeof newForm[field] === "number" ? 0 : "");
+        formUpdates[field] = lastThreat[field] !== undefined ? lastThreat[field] : "";
       });
-      setForm(newForm);
+      
+      setForm(prevForm => ({
+        ...prevForm,
+        ...formUpdates
+      }));
     }
   }, [editIndex, lastThreat, fieldsOpen, form.threatId, form.threatDescription, setForm]);
 
@@ -121,7 +127,7 @@ const TMInputForm = ({
         }}
       >
         <summary className="tm-inputform-summary">
-          Threat Modelling Form Fields
+          ✏️ Threat Modelling Form Fields
         </summary>
 
         {/* View Mode Toggle */}
@@ -563,10 +569,20 @@ const TMInputForm = ({
                 <td colSpan={2}>
                   <fieldset className="tm-inputform-fieldset tm-inputform-fieldset-cvss">
                     <legend className="tm-inputform-legend tm-inputform-legend-cvss">
-                      CVSS Assessment - Common Vulnerability Scoring System (Alternative to DREAD)
+                      CVSS Assessment - (Alternative to DREAD)
                     </legend>
                     <div style={{ marginBottom: '10px', fontSize: '0.9rem', color: '#666' }}>
-                      Use the <a href="https://www.first.org/cvss/calculator/4-0" target="_blank" rel="noopener noreferrer" style={{ color: '#007bff', textDecoration: 'underline' }}>CVSS 4.0 Calculator</a> to generate vector strings and scores.
+                      Use the <a 
+                        href={form.cvssVector && form.cvssVector.startsWith('CVSS:4.0') 
+                          ? `https://www.first.org/cvss/calculator/4-0#${form.cvssVector}` 
+                          : "https://www.first.org/cvss/calculator/4-0"
+                        } 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        style={{ color: '#007bff', textDecoration: 'underline' }}
+                      >
+                        CVSS 4.0 Calculator
+                      </a> to generate vector strings and scores.
                     </div>
                     <table className="tm-inputform-field-table">
                       <tbody>
@@ -803,21 +819,23 @@ const TMInputForm = ({
             </tbody>
           </table>
         </div>
-          <div className="tm-flex-gap">
+        <div className="tm-button-container">
+          <div className="tm-button-group">
             <button
               type="submit"
-              className="tm-btn tm-btn-primary"
+              className="tm-btn tm-btn-secondary"
             >
               {editIndex !== null ? "Update Entry" : "Submit Threat Details"}
             </button>
             <button
               type="button"
               onClick={handleCancel}
-              className="tm-btn tm-btn-cancel"
+              className="tm-btn tm-btn-outline"
             >
               Cancel
             </button>
           </div>
+        </div>
       </details>
     </form>
   );

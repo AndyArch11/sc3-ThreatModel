@@ -91,23 +91,50 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
 
     // Threat Model Entries Worksheet
     if (threats && threats.length > 0) {
-      // Calculate DREAD Risk for each threat
-      const calculateDreadRisk = (entry) => {
+      // Helper function to determine risk level (CVSS first, then DREAD)
+      const getRiskLevel = (entry) => {
+        // Prioritize CVSS Classification if available
+        if (entry.cvssClassification && entry.cvssClassification.trim() !== '') {
+          const cvssClassification = entry.cvssClassification.trim();
+          // Normalize CVSS classification to standard risk levels
+          switch (cvssClassification.toLowerCase()) {
+            case 'critical':
+            case 'very high':
+              return "Critical";
+            case 'high':
+              return "High";
+            case 'medium':
+            case 'moderate':
+              return "Medium";
+            case 'low':
+            case 'very low':
+              return "Low";
+            default:
+              // If it's a valid CVSS classification but not recognized, use as-is
+              return cvssClassification;
+          }
+        }
+        
+        // Fall back to DREAD calculation
         const dreadSum = Number(entry.damagePotential || 0) + Number(entry.reproducibility || 0) + 
                          Number(entry.exploitability || 1) + Number(entry.affectedUsers || 0) + Number(entry.discoverability || 10);
+        
         if (dreadSum >= 40) return "Critical";
         if (dreadSum >= 25) return "High";
         if (dreadSum >= 12) return "Medium";
         return "Low";
       };
 
-      // Prepare the data for the threats table
+      // Prepare the comprehensive data for the threats table
       const threatHeaders = [
+        // Basic Threat Information
         'Threat ID',
         'Threat Description',
         'Assessed By',
         'Assessed Date',
         'Design Location',
+        
+        // System Context
         'Source',
         'Target',
         'Protocol(s)',
@@ -116,26 +143,69 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         'Data Classification',
         'Business Process',
         'Business Criticality',
-        'Status',
-        'Priority',
+        
+        // STRIDE Assessment
+        'Spoofing',
+        'Tampering',
+        'Repudiation',
+        'Information Disclosure',
+        'Denial of Service',
+        'Elevation of Privilege',
+        
+        // DREAD Assessment
         'Damage Potential',
         'Reproducibility',
         'Exploitability',
         'Affected Users',
         'Discoverability',
         'DREAD Risk',
-        'Actions'
+        
+        // CVSS Assessment
+        'CVSS Vector',
+        'CVSS Score',
+        'CVSS Classification',
+        
+        // Actions & Status
+        'Actions',
+        'Status',
+        'Priority',
+        'Target Date',
+        'Responsible Person',
+        'Last Updated',
+        'Notes',
+        
+        // Final Risk Assessment
+        'Final Risk Level'
       ];
 
-      const threatData = [threatHeaders];
+      // Create section headers for better organization
+      const sectionHeaders = [
+        'Basic Information', '', '', '', '',           // 5 columns
+        'System Context', '', '', '', '', '', '', '',  // 8 columns  
+        'STRIDE Assessment', '', '', '', '', '',       // 6 columns
+        'DREAD Assessment', '', '', '', '', '',        // 6 columns
+        'CVSS Assessment', '', '',                     // 3 columns
+        'Actions & Management', '', '', '', '', '', '', // 7 columns
+        'Final Risk'                                   // 1 column
+      ];
+
+      const threatData = [sectionHeaders, threatHeaders];
 
       threats.forEach(threat => {
+        // Calculate DREAD Risk for comparison
+        const dreadSum = Number(threat.damagePotential || 0) + Number(threat.reproducibility || 0) + 
+                         Number(threat.exploitability || 1) + Number(threat.affectedUsers || 0) + Number(threat.discoverability || 10);
+        const dreadRisk = dreadSum >= 40 ? "Critical" : dreadSum >= 25 ? "High" : dreadSum >= 12 ? "Medium" : "Low";
+        
         threatData.push([
+          // Basic Threat Information
           threat.threatId || '',
           threat.threatDescription || '',
           threat.assessedBy || '',
           threat.assessedDate || '',
           threat.designLocation || '',
+          
+          // System Context
           threat.source || '',
           threat.target || '',
           threat.protocols || '',
@@ -144,27 +214,54 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
           getDataClassificationText(threat.dataClassification),
           threat.businessProcess || '',
           getBusinessCriticalityText(threat.businessCriticality),
-          threat.status || '',
-          threat.priority || '',
+          
+          // STRIDE Assessment
+          threat.spoofing || '',
+          threat.tampering || '',
+          threat.repudiation || '',
+          threat.informationDisclosure || '',
+          threat.denialOfService || '',
+          threat.elevationOfPrivilege || '',
+          
+          // DREAD Assessment
           threat.damagePotential || '',
           threat.reproducibility || '',
           threat.exploitability || '',
           threat.affectedUsers || '',
           threat.discoverability || '',
-          calculateDreadRisk(threat),
-          threat.actions || ''
+          dreadRisk,
+          
+          // CVSS Assessment
+          threat.cvssVector || '',
+          threat.cvssScore || '',
+          threat.cvssClassification || '',
+          
+          // Actions & Status
+          threat.actions || '',
+          threat.status || '',
+          threat.priority || '',
+          threat.targetDate || '',
+          threat.responsiblePerson || '',
+          threat.lastUpdated || '',
+          threat.notes || '',
+          
+          // Final Risk Assessment
+          getRiskLevel(threat)
         ]);
       });
 
       const threatWS = XLSX.utils.aoa_to_sheet(threatData);
       
-      // Set column widths for threat entries sheet
+      // Set column widths for comprehensive threat entries sheet
       threatWS['!cols'] = [
+        // Basic Threat Information
         { wch: 12 }, // Threat ID
         { wch: 30 }, // Threat Description
         { wch: 15 }, // Assessed By
         { wch: 12 }, // Assessed Date
         { wch: 20 }, // Design Location
+        
+        // System Context
         { wch: 15 }, // Source
         { wch: 15 }, // Target
         { wch: 15 }, // Protocol(s)
@@ -173,15 +270,39 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         { wch: 18 }, // Data Classification
         { wch: 20 }, // Business Process
         { wch: 18 }, // Business Criticality
-        { wch: 12 }, // Status
-        { wch: 10 }, // Priority
+        
+        // STRIDE Assessment
+        { wch: 15 }, // Spoofing
+        { wch: 15 }, // Tampering
+        { wch: 15 }, // Repudiation
+        { wch: 18 }, // Information Disclosure
+        { wch: 15 }, // Denial of Service
+        { wch: 18 }, // Elevation of Privilege
+        
+        // DREAD Assessment
         { wch: 12 }, // Damage Potential
         { wch: 12 }, // Reproducibility
         { wch: 12 }, // Exploitability
         { wch: 12 }, // Affected Users
         { wch: 12 }, // Discoverability
         { wch: 12 }, // DREAD Risk
-        { wch: 30 }  // Actions
+        
+        // CVSS Assessment
+        { wch: 25 }, // CVSS Vector
+        { wch: 10 }, // CVSS Score
+        { wch: 15 }, // CVSS Classification
+        
+        // Actions & Status
+        { wch: 30 }, // Actions
+        { wch: 12 }, // Status
+        { wch: 10 }, // Priority
+        { wch: 12 }, // Target Date
+        { wch: 18 }, // Responsible Person
+        { wch: 12 }, // Last Updated
+        { wch: 25 }, // Notes
+        
+        // Final Risk Assessment
+        { wch: 15 }  // Final Risk Level
       ];
       
       // Add the threats worksheet to workbook

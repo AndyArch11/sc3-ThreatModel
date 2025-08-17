@@ -66,7 +66,7 @@ const TMIntro = () => {
   return (
     <details className="tm-intro-details">
       <summary className="tm-intro-summary">
-        Threat Modelling Guidance and Preparation
+        📚 Threat Modelling Guidance and Preparation
       </summary>
         <p>
             <em>Threat modeling</em> is a proactive approach to identifying and mitigating potential security threats to a system. It involves analyzing the system architecture, identifying potential attack vectors, and implementing security controls to mitigate those risks.
@@ -581,6 +581,10 @@ const TMIntro = () => {
                         <li>Threat Actor Profiling</li>
                         <li>User Story Mapping</li>
                         <li>Stakeholder Analysis</li>
+                        <li>OCTAVE (Asset-Driven)</li>
+                        <li>Security Cards (Human Impact)</li>
+                        <li>Hybrid Threat Modeling Method (hTMM)</li>
+                        <li>Attack Trees (Actor Modeling)</li>
                       </ul>
                     </td>
                   </tr>
@@ -591,6 +595,7 @@ const TMIntro = () => {
                         <li>Data</li>
                         <li>Applications</li>
                         <li>Infrastructure</li>
+                        <li>Identities / Credentials</li>
                         <li>Processes</li>
                         <ul style={{ margin: '4px 0', paddingLeft: '20px', listStylePosition: 'inside' }}>
                           <li>Business Processes</li>
@@ -611,7 +616,11 @@ const TMIntro = () => {
                         <li>Data Manipulation</li>
                         <li>Service Disruption</li>
                         <li>System Compromise</li>
+                        <li>Denial of Service</li>
                         <li>Reputation Damage</li>
+                        <li>Intellectual Property Theft</li>
+                        <li>Credential Theft</li>
+                        <li>Account Takeover</li>
                       </ul>
                     </td>
                     <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
@@ -657,11 +666,17 @@ const TMIntro = () => {
                     </td>
                     <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
                       <ul style={{ margin: '0', paddingLeft: '20px', listStylePosition: 'inside' }}>
+                        <li>CIA Triad (Confidentiality, Integrity, Availability)</li>
                         <li>Data Classification Frameworks</li>
                         <li>Application Security Frameworks</li>
                         <li>Infrastructure Security Frameworks</li>
                         <li>Process Mapping and Analysis Tools</li>
                         <li>CVSS (Common Vulnerability Scoring System)</li>
+                        <li>CVE-CWE Mapping</li>
+                        <li>OWASP SAMM (Software Assurance Maturity Model)</li>
+                        <li>Trike (Requirements-Based Modeling)</li>
+                        <li>LINDDUN (Privacy-Focused)</li>
+                        <li>DREAD (Risk Assessment)</li>
                       </ul>
                     </td>
                   </tr>
@@ -683,7 +698,7 @@ const TMIntro = () => {
                         <li>Cloud Services</li>
                         <li>Third-Party Integrations</li>
                         <li>Mobile Applications</li>
-                        <li>OT / IoT Devices</li>
+                        <li>IoT / OT Devices</li>
                         <li>Embedded Systems</li>
                         <li>Legacy Systems</li>
                         <li>Email Systems</li>
@@ -700,15 +715,20 @@ const TMIntro = () => {
                         <li>Mobile Device Management (MDM)</li>
                         <li>Mobile Application Management (MAM)</li>
                         <li>Data Loss Prevention (DLP)</li>
-                        <li>OT / IoT Security Solutions</li>
+                        <li>IoT / OT Security Solutions</li>
                       </ul>
                     </td>
                     <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
                       <ul>
-                        <li>STRIDE</li>
-                        <li>LINDDUN</li>
-                        <li>PASTA</li>
-                        <li>OCTAVE</li>
+                        <li>STRIDE (Environment-Specific)</li>
+                        <li>LINDDUN (Privacy by Design)</li>
+                        <li>PASTA (Technical Scope Analysis)</li>
+                        <li>OCTAVE (Infrastructure Assessment)</li>
+                        <li>Cloud Security Frameworks</li>
+                        <li>IoT/OT Security Frameworks</li>
+                        <li>Zero Trust Architecture</li>
+                        <li>Network Security Frameworks</li>
+                        <li>Mobile Security Frameworks</li>
                       </ul>
                     </td>
                   </tr>
@@ -753,6 +773,11 @@ const TMIntro = () => {
                         <li>DevSecOps Integration</li>
                         <li>Continuous Risk Assessment</li>
                         <li>Incident Response Planning</li>
+                        <li>SSDLC (Secure Software Development Lifecycle)</li>
+                        <li>Agile Threat Modeling</li>
+                        <li>VAST (Visual, Agile, and Simple Threat)</li>
+                        <li>Threat Modeling Manifesto</li>
+                        <li>DORA/TLPT (Regulatory Testing)</li>
                       </ul>
                     </td>
                   </tr>
@@ -795,8 +820,12 @@ const TMIntro = () => {
                       <ul>
                         <li>Attack Tree Analysis</li>
                         <li>Motivation Modeling</li>
-                        <li>Kill Chain Analysis</li>
+                        <li>Kill Chain Analysis (Cyber Kill Chains)</li>
                         <li>CAPEC (Common Attack Pattern Enumeration)</li>
+                        <li>Personae non Gratae (PnG) Motivation Analysis</li>
+                        <li>Security Cards (Adversary Motivations)</li>
+                        <li>MITRE ATT&CK (Tactics & Techniques)</li>
+                        <li>Threat Intelligence Integration</li>
                       </ul>
                     </td>
                   </tr>
@@ -830,14 +859,18 @@ const TMIntro = () => {
                         <li>Hacked passwords</li>
                         <li>Phishing attacks</li>
                         <li>Social engineering</li>
+                        <li>Impersonation</li>
                         <li>Credential stuffing</li>
                         <li>Brute force attacks</li>
+                        <li>Session hijacking</li>
+                        <li>Man-in-the-middle attacks</li>
                         <li>Application vulnerabilities</li>
                         <li>Misconfigured cloud settings</li>
                         <li>Unpatched software</li>
                         <li>Malware infections</li>
                         <li>Dark Web exploits</li>
                         <li>Zero-Day Exploits</li>
+                        <li>Lateral movement from breach</li>
                         <li>Insider threats</li>
                         <li>Supply chain attacks</li>
                       </ul>
@@ -856,11 +889,18 @@ const TMIntro = () => {
                     </td>
                     <td style={{ border: '1px solid #dee2e6', padding: '12px', verticalAlign: 'top' }}>
                       <ul>
-                        <li>STRIDE</li>
-                        <li>PASTA</li>
-                        <li>OCTAVE</li>
-                        <li>VAST</li>
+                        <li>STRIDE (Attack Method Classification)</li>
+                        <li>STRIDE+ (Extended Attack Categories)</li>
+                        <li>PASTA (Attack Simulation & Analysis)</li>
+                        <li>OCTAVE (Vulnerability Evaluation)</li>
+                        <li>VAST (Visual Attack Modeling)</li>
                         <li>CVSS Scoring Methodology</li>
+                        <li>DREAD (Exploitability Assessment)</li>
+                        <li>MITRE ATT&CK (Attack Techniques)</li>
+                        <li>Cyber Kill Chains</li>
+                        <li>Attack Trees</li>
+                        <li>CVE-CWE (Vulnerability & Weakness Mapping)</li>
+                        <li>Security Cards (Attack Methods)</li>
                       </ul>
                     </td>
                   </tr>

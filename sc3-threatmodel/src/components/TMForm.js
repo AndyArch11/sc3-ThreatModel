@@ -7,7 +7,7 @@ import { exportThreatsToExcel } from "./ExcelExport";
 import "./TM.css";
 
 
-const VERSION = "v0.1.2"; // Update as needed
+const VERSION = "v0.1.3"; // Update as needed
 
 // Helper to get today's date in YYYY-MM-DD format
 const getToday = () => {
@@ -406,27 +406,7 @@ const TMForm = () => {
         Threat Model Form
       </h2>
       <TMIntro />
-
       
-      {/* Show Add New Threat button if table is not empty and form is hidden */}
-      {(!fieldsOpen && entries.length > 0) && (
-        <button
-          className="tm-btn tm-btn-primary"
-          style={{ marginBottom: "1em" }}
-          onClick={() => {
-            // Start with a clean form to trigger useEffect pre-population
-            setForm({
-              ...initialForm,
-              assessedDate: getToday()
-            });
-            setEditIndex(null);
-            setFieldsOpen(true);
-            setSubmitted(false);
-          }}
-        >
-          Add New Threat
-        </button>
-      )}
       {/* Show form only if fieldsOpen is true or table is empty */}
       {(fieldsOpen || entries.length === 0) && (
       <TMInputForm
