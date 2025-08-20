@@ -23,7 +23,7 @@ const TMInputForm = ({
   // State for view mode (basic or extended)
   const [viewMode, setViewMode] = useState('basic');
 
-  // Use centralized DREAD stats from TMForm
+  // Use centralised DREAD stats from TMForm
   const { dreadAverage, dreadRisk } = dreadStats(form);
 
   // Helper functions to get text values for coloring
@@ -136,7 +136,7 @@ const TMInputForm = ({
             View Mode:
           </label>
           <div className="tm-viewmode-options">
-            <label>
+            <label className="tm-view-mode-label">
               <input
                 type="radio"
                 value="basic"
@@ -145,7 +145,7 @@ const TMInputForm = ({
               />
               Basic (Essential fields only)
             </label>
-            <label>
+            <label className="tm-view-mode-label">
               <input
                 type="radio"
                 value="extended"
@@ -441,7 +441,7 @@ const TMInputForm = ({
                             </span></td>
                           <td>
                             <input
-                              title="The potential impact of the threat if it were to materialize?"
+                              title="The potential impact of the threat if it were to materialise?"
                               type="number" 
                               name="damagePotential" 
                               value={form.damagePotential} 

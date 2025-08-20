@@ -35,12 +35,12 @@ const TMTable = ({
   // State for collapsible table section
   const [tmOpen, setTmOpen] = useState(true);
   
-  // Helper function to get risk level (prioritize CVSS over DREAD)
+  // Helper function to get risk level (prioritise CVSS over DREAD)
   const getRiskLevel = (entry) => {
-    // Prioritize CVSS Classification if available
+    // Prioritise CVSS Classification if available
     if (entry.cvssClassification && entry.cvssClassification.trim() !== '') {
       const cvssClassification = entry.cvssClassification.trim();
-      // Normalize CVSS classification to standard risk levels
+      // Normalise CVSS classification to standard risk levels
       switch (cvssClassification.toLowerCase()) {
         case 'critical':
         case 'very high':

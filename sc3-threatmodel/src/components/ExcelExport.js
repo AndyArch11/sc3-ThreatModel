@@ -13,7 +13,7 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
       [''],
       ['What is Threat Modeling?'],
       ['Threat modeling is a proactive approach to identifying and mitigating potential security threats to a system.'],
-      ['It involves analyzing the system architecture, identifying potential attack vectors, and implementing security controls to mitigate those risks.'],
+      ['It involves analysing the system architecture, identifying potential attack vectors, and implementing security controls to mitigate those risks.'],
       ['Threat modeling is a key activity of the Security Development Lifecycle (SDL) and is essential for building secure systems.'],
       [''],
       ['Standards and References:'],
@@ -35,9 +35,9 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
       ['S - Spoofing: Impersonation threats'],
       ['T - Tampering: Data manipulation threats'],
       ['R - Repudiation: Denial of actions'],
-      ['I - Information Disclosure: Unauthorized access to data'],
+      ['I - Information Disclosure: Unauthorised access to data'],
       ['D - Denial of Service: Service disruption'],
-      ['E - Elevation of Privilege: Unauthorized access escalation'],
+      ['E - Elevation of Privilege: Unauthorised access escalation'],
       [''],
       ['DREAD Framework - Risk Assessment:'],
       ['D - Damage Potential: Impact of the threat'],
@@ -58,7 +58,7 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
       ['• Involve cross-functional teams'],
       ['• Use visual aids like data flow diagrams'],
       ['• Regularly review and update threat models'],
-      ['• Prioritize threats based on risk assessment'],
+      ['• Prioritise threats based on risk assessment'],
       ['• Integrate into software development lifecycle'],
       ['• Document findings and decisions'],
       [''],
@@ -93,10 +93,10 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
     if (threats && threats.length > 0) {
       // Helper function to determine risk level (CVSS first, then DREAD)
       const getRiskLevel = (entry) => {
-        // Prioritize CVSS Classification if available
+        // Prioritise CVSS Classification if available
         if (entry.cvssClassification && entry.cvssClassification.trim() !== '') {
           const cvssClassification = entry.cvssClassification.trim();
-          // Normalize CVSS classification to standard risk levels
+          // Normalise CVSS classification to standard risk levels
           switch (cvssClassification.toLowerCase()) {
             case 'critical':
             case 'very high':
@@ -110,7 +110,7 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
             case 'very low':
               return "Low";
             default:
-              // If it's a valid CVSS classification but not recognized, use as-is
+              // If it's a valid CVSS classification but not recognised, use as-is
               return cvssClassification;
           }
         }
@@ -178,7 +178,7 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         'Final Risk Level'
       ];
 
-      // Create section headers for better organization
+      // Create section headers for better organisation
       const sectionHeaders = [
         'Basic Information', '', '', '', '',           // 5 columns
         'System Context', '', '', '', '', '', '', '',  // 8 columns  

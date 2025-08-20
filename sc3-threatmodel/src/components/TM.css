@@ -183,6 +183,37 @@ select.tm-input:disabled {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Back to Top Button Styles */
+.tm-back-to-top-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  padding: 1rem 0;
+}
+
+.tm-back-to-top-button {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  border-radius: var(--sc3-btn-radius);
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: var(--sc3-btn-font-weight);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tm-back-to-top-button:hover {
+  background: #e9ecef;
+  color: #495057;
+  border-color: #adb5bd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* Introduction component styles */
 .tm-intro-details {
   margin-bottom: 1rem;
@@ -905,4 +936,9 @@ select.tm-input:disabled {
     flex-direction: column;
     gap: 10px;
   }
+}
+
+.tm-view-mode-label {
+  color: #000;
+  margin-bottom: 0.5rem;
 }

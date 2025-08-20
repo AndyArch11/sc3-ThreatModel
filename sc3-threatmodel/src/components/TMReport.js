@@ -14,10 +14,10 @@ const TMReport = ({
 }) => {
   // Helper function to determine risk level (CVSS first, then DREAD)
   const getRiskLevel = (entry) => {
-    // Prioritize CVSS Classification if available
+    // Prioritise CVSS Classification if available
     if (entry.cvssClassification && entry.cvssClassification.trim() !== '') {
       const cvssClassification = entry.cvssClassification.trim();
-      // Normalize CVSS classification to standard risk levels
+      // Normalise CVSS classification to standard risk levels
       switch (cvssClassification.toLowerCase()) {
         case 'critical':
         case 'very high':
@@ -31,7 +31,7 @@ const TMReport = ({
         case 'very low':
           return "Low";
         default:
-          // If it's a valid CVSS classification but not recognized, use as-is
+          // If it's a valid CVSS classification but not recognised, use as-is
           return cvssClassification;
       }
     }
@@ -324,7 +324,7 @@ const TMReport = ({
                   )}
                   {highThreats > 0 && (
                     <li style={{ color: dreadRiskTextColors?.High || '#f57f17', fontWeight: 'bold', marginBottom: '0.5em' }}>
-                      {highThreats} high risk threat{highThreats !== 1 ? 's' : ''} should be prioritized
+                      {highThreats} high risk threat{highThreats !== 1 ? 's' : ''} should be prioritised
                     </li>
                   )}
                   {mediumThreats > 0 && (
