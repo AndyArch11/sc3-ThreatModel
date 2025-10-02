@@ -154,10 +154,15 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         
         // DREAD Assessment
         'Damage Potential',
+        'Damage Potential Justification',
         'Reproducibility',
+        'Reproducibility Justification',
         'Exploitability',
+        'Exploitability Justification',
         'Affected Users',
+        'Affected Users Justification',
         'Discoverability',
+        'Discoverability Justification',
         'DREAD Risk',
         
         // CVSS Assessment
@@ -183,7 +188,7 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         'Basic Information', '', '', '', '',           // 5 columns
         'System Context', '', '', '', '', '', '', '',  // 8 columns  
         'STRIDE Assessment', '', '', '', '', '',       // 6 columns
-        'DREAD Assessment', '', '', '', '', '',        // 6 columns
+        'DREAD Assessment', '', '', '', '', '', '', '', '', '', '', '',        // 12 columns
         'CVSS Assessment', '', '',                     // 3 columns
         'Actions & Management', '', '', '', '', '', '', // 7 columns
         'Final Risk'                                   // 1 column
@@ -225,10 +230,15 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
           
           // DREAD Assessment
           threat.damagePotential || '',
+          threat.damagePotentialJustification || '',
           threat.reproducibility || '',
+          threat.reproducibilityJustification || '',
           threat.exploitability || '',
+          threat.exploitabilityJustification || '',
           threat.affectedUsers || '',
+          threat.affectedUsersJustification || '',
           threat.discoverability || '',
+          threat.discoverabilityJustification || '',
           dreadRisk,
           
           // CVSS Assessment
@@ -281,10 +291,15 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         
         // DREAD Assessment
         { wch: 12 }, // Damage Potential
+        { wch: 30 }, // Damage Potential Justification
         { wch: 12 }, // Reproducibility
+        { wch: 30 }, // Reproducibility Justification
         { wch: 12 }, // Exploitability
+        { wch: 30 }, // Exploitability Justification
         { wch: 12 }, // Affected Users
+        { wch: 30 }, // Affected Users Justification
         { wch: 12 }, // Discoverability
+        { wch: 30 }, // Discoverability Justification
         { wch: 12 }, // DREAD Risk
         
         // CVSS Assessment

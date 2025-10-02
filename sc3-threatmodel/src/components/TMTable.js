@@ -194,7 +194,7 @@ const TMTable = ({
                 <tr>
                   <th colSpan={13} className="tm-th-group-threat">Threat Model Details - what are we working on?</th>
                   <th colSpan={6} className="tm-th-group-stride">STRIDE Assessment - what can go wrong?</th>
-                  <th colSpan={7} className="tm-th-group-dread">DREAD Assessment - how bad can it get?</th>
+                  <th colSpan={12} className="tm-th-group-dread">DREAD Assessment - how bad can it get?</th>
                   <th colSpan={3} className="tm-th-group-cvss">CVSS Assessment</th>
                   <th colSpan={7} className="tm-th-group-action">Actions - what are we going to do about it?</th>
                 </tr>
@@ -219,10 +219,15 @@ const TMTable = ({
                   <th className="tm-th-stride">Denial of Service</th>
                   <th className="tm-th-stride">Elevation of Privilege</th>
                   <th className="tm-th-dread">Damage Potential</th>
+                  <th className="tm-th-dread">Damage Potential Justification</th>
                   <th className="tm-th-dread">Reproducibility</th>
+                  <th className="tm-th-dread">Reproducibility Justification</th>
                   <th className="tm-th-dread">Exploitability</th>
+                  <th className="tm-th-dread">Exploitability Justification</th>
                   <th className="tm-th-dread">Affected Users</th>
+                  <th className="tm-th-dread">Affected Users Justification</th>
                   <th className="tm-th-dread">Discoverability</th>
+                  <th className="tm-th-dread">Discoverability Justification</th>
                   <th className="tm-th-dread">DREAD Average</th>
                   <th className="tm-th-dread">DREAD Risk</th>
                   <th className="tm-th-cvss">CVSS Vector</th>
@@ -278,10 +283,15 @@ const TMTable = ({
                     <td className="tm-td-stride">{entry.denialOfService}</td>
                     <td className="tm-td-stride">{entry.elevationOfPrivilege}</td>
                     <td className="tm-td-dread">{entry.damagePotential}</td>
+                    <td className="tm-td-dread">{entry.damagePotentialJustification}</td>
                     <td className="tm-td-dread">{entry.reproducibility}</td>
+                    <td className="tm-td-dread">{entry.reproducibilityJustification}</td>
                     <td className="tm-td-dread">{entry.exploitability}</td>
+                    <td className="tm-td-dread">{entry.exploitabilityJustification}</td>
                     <td className="tm-td-dread">{entry.affectedUsers}</td>
+                    <td className="tm-td-dread">{entry.affectedUsersJustification}</td>
                     <td className="tm-td-dread">{entry.discoverability}</td>
+                    <td className="tm-td-dread">{entry.discoverabilityJustification}</td>
                     <td className="tm-td-dread">{entry.dreadAverage}</td>
                     <td className="tm-td-dread" style={{ backgroundColor: dreadRiskColors[entry.dreadRisk] || "#333" }}>
                       {entry.dreadRisk}

@@ -7,7 +7,7 @@ import { exportThreatsToExcel } from "./ExcelExport";
 import "./TM.css";
 
 
-const VERSION = "v0.1.3"; // Update as needed
+const VERSION = "v0.1.4"; // Update as needed
 
 // Helper to get today's date in YYYY-MM-DD format
 const getToday = () => {
@@ -61,10 +61,15 @@ const initialForm = {
     denialOfService: "",
     elevationOfPrivilege: "",
     damagePotential: 0,
+    damagePotentialJustification: "",
     reproducibility: 0,
+    reproducibilityJustification: "",
     exploitability: 1,
+    exploitabilityJustification: "",
     affectedUsers: 0,
+    affectedUsersJustification: "",
     discoverability: 10,
+    discoverabilityJustification: "",
     cvssVector: "",
     cvssScore: "",
     cvssClassification: "",

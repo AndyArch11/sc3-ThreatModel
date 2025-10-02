@@ -26,12 +26,7 @@ function Breadcrumbs() {
 
 function App() {
   return (
-    <Router>
-      {/* <Breadcrumbs /> */}
-      <Routes>
-        <Route path="/" element={<WrappedTMForm />} />
-      </Routes>
-    </Router>
+    <WrappedTMForm />
   );
 }
 

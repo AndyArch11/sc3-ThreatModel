@@ -415,7 +415,7 @@ const TMInputForm = ({
               </tr>
               {/* DREAD Assessment */}
               <tr>
-                <td colSpan={3}>
+                <td colSpan={4}>
                   <fieldset className="tm-inputform-fieldset tm-inputform-fieldset-dread">
                     <legend className="tm-inputform-legend tm-inputform-legend-dread">
                       DREAD Assessment - how bad can it get?
@@ -450,6 +450,13 @@ const TMInputForm = ({
                               min="0"
                               max="10"
                             /></td>
+                          <td>
+                            <textarea
+                              name="damagePotentialJustification"
+                              value={form.damagePotentialJustification}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
                         </tr>
                         <tr>
                           <td className="tm-inputform-field-cell-label-dread"><label className="tm-form-label">Reproducibility:</label></td>
@@ -474,6 +481,13 @@ const TMInputForm = ({
                               className="tm-input" 
                               min="0"
                               max="10"
+                            /></td>
+                          <td>
+                            <textarea
+                              name="reproducibilityJustification"
+                              value={form.reproducibilityJustification}
+                              onChange={handleChange}
+                              className="tm-input"
                             /></td>
                         </tr>
                         <tr title="How easy is it to exploit the threat?">
@@ -503,6 +517,13 @@ const TMInputForm = ({
                               min="1"
                               max="10"
                             /></td>
+                          <td>
+                            <textarea
+                              name="exploitabilityJustification"
+                              value={form.exploitabilityJustification}
+                              onChange={handleChange}
+                              className="tm-input"
+                            /></td>
                         </tr>
                         <tr title="How many users are affected by the threat?">
                           <td className="tm-inputform-field-cell-label-dread"><label className="tm-form-label">Affected Users:</label></td>
@@ -527,6 +548,13 @@ const TMInputForm = ({
                               className="tm-input" 
                               min="0"
                               max="10"
+                            /></td>
+                          <td>
+                            <textarea
+                              name="affectedUsersJustification"
+                              value={form.affectedUsersJustification}
+                              onChange={handleChange}
+                              className="tm-input"
                             /></td>
                         </tr>
                         <tr title="How easy is it to discover the threat?">
@@ -553,6 +581,13 @@ const TMInputForm = ({
                               className="tm-input" 
                               min="1"
                               max="10"
+                            /></td>
+                          <td>
+                            <textarea
+                              name="discoverabilityJustification"
+                              value={form.discoverabilityJustification}
+                              onChange={handleChange}
+                              className="tm-input"
                             /></td>
                         </tr>
                       </tbody>
