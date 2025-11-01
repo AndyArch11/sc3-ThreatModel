@@ -7,7 +7,7 @@ import { exportThreatsToExcel } from "./ExcelExport";
 import "./TM.css";
 
 
-const VERSION = "v0.1.4"; // Update as needed
+const VERSION = "v0.1.5"; // Update as needed
 
 // Helper to get today's date in YYYY-MM-DD format
 const getToday = () => {
@@ -99,24 +99,24 @@ const TMForm = () => {
     "discoverability"
   ];
 
-  // Dark colors for text (used in TMInputForm)
-  const dreadRiskTextColors = {
+  // Dark colours for text (used in TMInputForm)
+  const dreadRiskTextColours = {
     Critical: "#d32f2f",    // Dark red for high contrast text
     High: "#f57f17",        // Dark orange for high contrast text
     Medium: "#1976d2",      // Dark blue for high contrast text
     Low: "#388e3c"          // Dark green for high contrast text
   };
 
-  // Light colors for backgrounds (used in TMTable)
-  const dreadRiskColors = {
+  // Light colours for backgrounds (used in TMTable)
+  const dreadRiskBgColours = {
     Critical: "#f8d7da",    // Light red background
     High: "#fff3cd",        // Light yellow background
     Medium: "#d1ecf1",      // Light blue background
     Low: "#d1eddb"          // Light green background
   };
 
-  // Data Classification color maps
-  const dataClassificationTextColors = {
+  // Data Classification colour maps
+  const dataClassificationTextColours = {
     "Public": "#388e3c",
     "Internal": "#1976d2", 
     "Confidential": "#f57f17",
@@ -124,7 +124,7 @@ const TMForm = () => {
     "Highly Restricted": "#7b1fa2"
   };
 
-  const dataClassificationBgColors = {
+  const dataClassificationBgColours = {
     "Public": "#e8f5e8",
     "Internal": "#e3f2fd",
     "Confidential": "#fff3e0",
@@ -132,8 +132,8 @@ const TMForm = () => {
     "Highly Restricted": "#f3e5f5"
   };
 
-  // Business Criticality color maps
-  const businessCriticalityTextColors = {
+  // Business Criticality colour maps
+  const businessCriticalityTextColours = {
     "Platinum / Tier 1": "#7b1fa2",
     "Gold / Tier 2": "#f57f17",
     "Silver / Tier 3": "#757575",
@@ -141,7 +141,7 @@ const TMForm = () => {
     "None / Tier 5": "#9e9e9e"
   };
 
-  const businessCriticalityBgColors = {
+  const businessCriticalityBgColours = {
     "Platinum / Tier 1": "#f3e5f5",
     "Gold / Tier 2": "#fff3e0",
     "Silver / Tier 3": "#f5f5f5",
@@ -149,8 +149,8 @@ const TMForm = () => {
     "None / Tier 5": "#fafafa"
   };
 
-  // Status color maps
-  const statusTextColors = {
+  // Status colour maps
+  const statusTextColours = {
     "In-Progress": "#d29b19ff",
     "Mitigated": "#1976d2",
     "Eliminated": "#388e3c",
@@ -158,7 +158,7 @@ const TMForm = () => {
     "Accepted": "#d32f2f"
   };
 
-  const statusBgColors = {
+  const statusBgColours = {
     "In-Progress": "#e3f2fd",
     "Mitigated": "#e3f2fd",
     "Eliminated": "#e8f5e8",
@@ -166,30 +166,30 @@ const TMForm = () => {
     "Accepted": "#f8d7da"
   };
 
-  // Priority color maps
-  const priorityTextColors = {
+  // Priority colour maps
+  const priorityTextColours = {
     "Low": "#388e3c",
     "Moderate": "#1976d2",
     "Urgent": "#ff9800",
     "Critical": "#d32f2f"
   };
 
-  const priorityBgColors = {
+  const priorityBgColours = {
     "Low": "#e8f5e8",
     "Moderate": "#e3f2fd",
     "Urgent": "#fff3e0",
     "Critical": "#ffebee"
   };
 
-  // Suggested Action color maps
-  const actionTextColors = {
+  // Suggested Action colour maps
+  const actionTextColours = {
     "Mitigate": "#1976d2",
     "Eliminate": "#388e3c",
     "Transfer": "#ff9800",
     "Accept": "#d32f2f"
   };
 
-  const actionBgColors = {
+  const actionBgColours = {
     "Mitigate": "#e3f2fd",
     "Eliminate": "#e8f5e8",
     "Transfer": "#fff3e0",
@@ -425,12 +425,12 @@ const TMForm = () => {
         fieldsOpen={fieldsOpen}
         setFieldsOpen={setFieldsOpen}
         dreadStats={getDreadStats}
-        dreadRiskColors={dreadRiskTextColors}
-        dataClassificationColors={dataClassificationTextColors}
-        businessCriticalityColors={businessCriticalityTextColors}
-        statusColors={statusTextColors}
-        priorityColors={priorityTextColors}
-        actionColors={actionTextColors}
+        dreadRiskColours={dreadRiskTextColours}
+        dataClassificationColours={dataClassificationTextColours}
+        businessCriticalityColours={businessCriticalityTextColours}
+        statusColours={statusTextColours}
+        priorityColours={priorityTextColours}
+        actionColours={actionTextColours}
         lastThreat={entries.length > 0 ? entries[entries.length - 1] : null}
       />
       )}
@@ -440,12 +440,12 @@ const TMForm = () => {
         setEntries={setEntries}
         initialForm={initialForm}
         setForm={setForm}
-        dreadRiskColors={dreadRiskColors}
-        dataClassificationColors={dataClassificationBgColors}
-        businessCriticalityColors={businessCriticalityBgColors}
-        statusColors={statusBgColors}
-        priorityColors={priorityBgColors}
-        actionColors={actionBgColors}
+        dreadRiskColours={dreadRiskBgColours}
+        dataClassificationColours={dataClassificationBgColours}
+        businessCriticalityColours={businessCriticalityBgColours}
+        statusColours={statusBgColours}
+        priorityColours={priorityBgColours}
+        actionColours={actionBgColours}
         setEditIndex={setEditIndex}
         setSubmitted={setSubmitted}
         setFieldsOpen={setFieldsOpen}
@@ -470,12 +470,12 @@ const TMForm = () => {
         entries={entries}
         getDataClassificationText={getDataClassificationText}
         getBusinessCriticalityText={getBusinessCriticalityText}
-        dreadRiskTextColors={dreadRiskTextColors}
-        dataClassificationColors={dataClassificationTextColors}
-        businessCriticalityColors={businessCriticalityTextColors}
-        statusColors={statusTextColors}
-        priorityColors={priorityTextColors}
-        actionColors={actionTextColors}
+        dreadRiskTextColours={dreadRiskTextColours}
+        dataClassificationColours={dataClassificationTextColours}
+        businessCriticalityColours={businessCriticalityTextColours}
+        statusColours={statusTextColours}
+        priorityColours={priorityTextColours}
+        actionColours={actionTextColours}
       />
     </div>
   );

@@ -5,12 +5,12 @@ const TMReport = ({
   entries, 
   getDataClassificationText, 
   getBusinessCriticalityText,
-  dreadRiskTextColors,
-  dataClassificationColors,
-  businessCriticalityColors,
-  statusColors,
-  priorityColors,
-  actionColors
+  dreadRiskTextColours,
+  dataClassificationColours,
+  businessCriticalityColours,
+  statusColours,
+  priorityColours,
+  actionColours
 }) => {
   // Helper function to determine risk level (CVSS first, then DREAD)
   const getRiskLevel = (entry) => {
@@ -75,10 +75,10 @@ const TMReport = ({
 
   // Create donut chart data
   const riskData = [
-    { label: 'Critical', value: criticalThreats, color: dreadRiskTextColors?.Critical || '#d32f2f' },
-    { label: 'High', value: highThreats, color: dreadRiskTextColors?.High || '#f57f17' },
-    { label: 'Medium', value: mediumThreats, color: dreadRiskTextColors?.Medium || '#388e3c' },
-    { label: 'Low', value: lowThreats, color: dreadRiskTextColors?.Low || '#1976d2' }
+    { label: 'Critical', value: criticalThreats, color: dreadRiskTextColours?.Critical || '#d32f2f' },
+    { label: 'High', value: highThreats, color: dreadRiskTextColours?.High || '#f57f17' },
+    { label: 'Medium', value: mediumThreats, color: dreadRiskTextColours?.Medium || '#388e3c' },
+    { label: 'Low', value: lowThreats, color: dreadRiskTextColours?.Low || '#1976d2' }
   ].filter(item => item.value > 0); // Only show categories with values
 
   // State for tooltip
@@ -318,22 +318,22 @@ const TMReport = ({
                 </p>
                 <ul style={{ marginLeft: '1.5em', marginBottom: '1em' }}>
                   {criticalThreats > 0 && (
-                    <li style={{ color: dreadRiskTextColors?.Critical || '#d32f2f', fontWeight: 'bold', marginBottom: '0.5em' }}>
+                    <li style={{ color: dreadRiskTextColours?.Critical || '#d32f2f', fontWeight: 'bold', marginBottom: '0.5em' }}>
                       {criticalThreats} critical risk threat{criticalThreats !== 1 ? 's' : ''} require immediate attention
                     </li>
                   )}
                   {highThreats > 0 && (
-                    <li style={{ color: dreadRiskTextColors?.High || '#f57f17', fontWeight: 'bold', marginBottom: '0.5em' }}>
+                    <li style={{ color: dreadRiskTextColours?.High || '#f57f17', fontWeight: 'bold', marginBottom: '0.5em' }}>
                       {highThreats} high risk threat{highThreats !== 1 ? 's' : ''} should be prioritised
                     </li>
                   )}
                   {mediumThreats > 0 && (
-                    <li style={{ color: dreadRiskTextColors?.Medium || '#388e3c', fontWeight: 'bold', marginBottom: '0.5em' }}>
+                    <li style={{ color: dreadRiskTextColours?.Medium || '#388e3c', fontWeight: 'bold', marginBottom: '0.5em' }}>
                       {mediumThreats} medium risk threat{mediumThreats !== 1 ? 's' : ''}
                     </li>
                   )}
                   {lowThreats > 0 && (
-                    <li style={{ color: dreadRiskTextColors?.Low || '#1976d2', fontWeight: 'bold', marginBottom: '0.5em' }}>
+                    <li style={{ color: dreadRiskTextColours?.Low || '#1976d2', fontWeight: 'bold', marginBottom: '0.5em' }}>
                       {lowThreats} low risk threat{lowThreats !== 1 ? 's' : ''}
                     </li>
                   )}
@@ -432,21 +432,21 @@ const TMReport = ({
                   {/* Risk Grid */}
                   <div style={{ flex: '1 1 auto', minWidth: '300px' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1em' }}>
-                      <div style={{ background: '#ffebee', padding: '1em', borderRadius: '6px', textAlign: 'center', border: `2px solid ${dreadRiskTextColors?.Critical || '#d32f2f'}` }}>
-                        <div style={{ fontSize: '2em', fontWeight: 'bold', color: dreadRiskTextColors?.Critical || '#d32f2f' }}>{criticalThreats}</div>
-                        <div style={{ color: dreadRiskTextColors?.Critical || '#d32f2f' }}>Critical</div>
+                      <div style={{ background: '#ffebee', padding: '1em', borderRadius: '6px', textAlign: 'center', border: `2px solid ${dreadRiskTextColours?.Critical || '#d32f2f'}` }}>
+                        <div style={{ fontSize: '2em', fontWeight: 'bold', color: dreadRiskTextColours?.Critical || '#d32f2f' }}>{criticalThreats}</div>
+                        <div style={{ color: dreadRiskTextColours?.Critical || '#d32f2f' }}>Critical</div>
                       </div>
-                      <div style={{ background: '#fffbea', padding: '1em', borderRadius: '6px', textAlign: 'center', border: `2px solid ${dreadRiskTextColors?.High || '#f57f17'}` }}>
-                        <div style={{ fontSize: '2em', fontWeight: 'bold', color: dreadRiskTextColors?.High || '#f57f17' }}>{highThreats}</div>
-                        <div style={{ color: dreadRiskTextColors?.High || '#f57f17' }}>High</div>
+                      <div style={{ background: '#fffbea', padding: '1em', borderRadius: '6px', textAlign: 'center', border: `2px solid ${dreadRiskTextColours?.High || '#f57f17'}` }}>
+                        <div style={{ fontSize: '2em', fontWeight: 'bold', color: dreadRiskTextColours?.High || '#f57f17' }}>{highThreats}</div>
+                        <div style={{ color: dreadRiskTextColours?.High || '#f57f17' }}>High</div>
                       </div>
-                      <div style={{ background: '#f8fff5', padding: '1em', borderRadius: '6px', textAlign: 'center', border: `2px solid ${dreadRiskTextColors?.Medium || '#388e3c'}` }}>
-                        <div style={{ fontSize: '2em', fontWeight: 'bold', color: dreadRiskTextColors?.Medium || '#388e3c' }}>{mediumThreats}</div>
-                        <div style={{ color: dreadRiskTextColors?.Medium || '#388e3c' }}>Medium</div>
+                      <div style={{ background: '#f8fff5', padding: '1em', borderRadius: '6px', textAlign: 'center', border: `2px solid ${dreadRiskTextColours?.Medium || '#388e3c'}` }}>
+                        <div style={{ fontSize: '2em', fontWeight: 'bold', color: dreadRiskTextColours?.Medium || '#388e3c' }}>{mediumThreats}</div>
+                        <div style={{ color: dreadRiskTextColours?.Medium || '#388e3c' }}>Medium</div>
                       </div>
-                      <div style={{ background: '#f5faff', padding: '1em', borderRadius: '6px', textAlign: 'center', border: `2px solid ${dreadRiskTextColors?.Low || '#1976d2'}` }}>
-                        <div style={{ fontSize: '2em', fontWeight: 'bold', color: dreadRiskTextColors?.Low || '#1976d2' }}>{lowThreats}</div>
-                        <div style={{ color: dreadRiskTextColors?.Low || '#1976d2' }}>Low</div>
+                      <div style={{ background: '#f5faff', padding: '1em', borderRadius: '6px', textAlign: 'center', border: `2px solid ${dreadRiskTextColours?.Low || '#1976d2'}` }}>
+                        <div style={{ fontSize: '2em', fontWeight: 'bold', color: dreadRiskTextColours?.Low || '#1976d2' }}>{lowThreats}</div>
+                        <div style={{ color: dreadRiskTextColours?.Low || '#1976d2' }}>Low</div>
                       </div>
                     </div>
                   </div>
@@ -764,11 +764,11 @@ const TMReport = ({
 
                   const getCategoryColor = (category) => {
                     switch (category) {
-                      case 'status': return statusColors ? Object.values(statusColors)[0] || '#2196f3' : '#2196f3';
-                      case 'data': return dataClassificationColors ? Object.values(dataClassificationColors)[0] || '#4caf50' : '#4caf50';
-                      case 'business': return businessCriticalityColors ? Object.values(businessCriticalityColors)[0] || '#ff9800' : '#ff9800';
-                      case 'priority': return priorityColors ? Object.values(priorityColors)[0] || '#9c27b0' : '#9c27b0';
-                      case 'actions': return actionColors ? Object.values(actionColors)[0] || '#607d8b' : '#607d8b';
+                      case 'status': return statusColours ? Object.values(statusColours)[0] || '#2196f3' : '#2196f3';
+                      case 'data': return dataClassificationColours ? Object.values(dataClassificationColours)[0] || '#4caf50' : '#4caf50';
+                      case 'business': return businessCriticalityColours ? Object.values(businessCriticalityColours)[0] || '#ff9800' : '#ff9800';
+                      case 'priority': return priorityColours ? Object.values(priorityColours)[0] || '#9c27b0' : '#9c27b0';
+                      case 'actions': return actionColours ? Object.values(actionColours)[0] || '#607d8b' : '#607d8b';
                       default: return '#757575';
                     }
                   };

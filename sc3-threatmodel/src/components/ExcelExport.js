@@ -132,7 +132,7 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         'Threat Description',
         'Assessed By',
         'Assessed Date',
-        'Design Location',
+        'Design Location (URL)',
         
         // System Context
         'Source',
@@ -163,10 +163,11 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         'Affected Users Justification',
         'Discoverability',
         'Discoverability Justification',
+        'DREAD Average',
         'DREAD Risk',
         
         // CVSS Assessment
-        'CVSS Vector',
+        'CVSS Vector: https://www.first.org/cvss/calculator/4-0',
         'CVSS Score',
         'CVSS Classification',
         
@@ -188,7 +189,7 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         'Basic Information', '', '', '', '',           // 5 columns
         'System Context', '', '', '', '', '', '', '',  // 8 columns  
         'STRIDE Assessment', '', '', '', '', '',       // 6 columns
-        'DREAD Assessment', '', '', '', '', '', '', '', '', '', '', '',        // 12 columns
+        'DREAD Assessment', '', '', '', '', '', '', '', '', '', '', '',   // 12 columns
         'CVSS Assessment', '', '',                     // 3 columns
         'Actions & Management', '', '', '', '', '', '', // 7 columns
         'Final Risk'                                   // 1 column
@@ -200,6 +201,7 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         // Calculate DREAD Risk for comparison
         const dreadSum = Number(threat.damagePotential || 0) + Number(threat.reproducibility || 0) + 
                          Number(threat.exploitability || 1) + Number(threat.affectedUsers || 0) + Number(threat.discoverability || 10);
+        const dreadAverage = (dreadSum / 5).toFixed(1);
         const dreadRisk = dreadSum >= 40 ? "Critical" : dreadSum >= 25 ? "High" : dreadSum >= 12 ? "Medium" : "Low";
         
         threatData.push([
@@ -239,6 +241,7 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
           threat.affectedUsersJustification || '',
           threat.discoverability || '',
           threat.discoverabilityJustification || '',
+          dreadAverage,
           dreadRisk,
           
           // CVSS Assessment
@@ -282,39 +285,40 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         { wch: 18 }, // Business Criticality
         
         // STRIDE Assessment
-        { wch: 15 }, // Spoofing
-        { wch: 15 }, // Tampering
-        { wch: 15 }, // Repudiation
-        { wch: 18 }, // Information Disclosure
-        { wch: 15 }, // Denial of Service
-        { wch: 18 }, // Elevation of Privilege
+        { wch: 30 }, // Spoofing
+        { wch: 30 }, // Tampering
+        { wch: 30 }, // Repudiation
+        { wch: 30 }, // Information Disclosure
+        { wch: 30 }, // Denial of Service
+        { wch: 30 }, // Elevation of Privilege
         
         // DREAD Assessment
-        { wch: 12 }, // Damage Potential
+        { wch: 15 }, // Damage Potential
         { wch: 30 }, // Damage Potential Justification
-        { wch: 12 }, // Reproducibility
+        { wch: 15 }, // Reproducibility
         { wch: 30 }, // Reproducibility Justification
-        { wch: 12 }, // Exploitability
+        { wch: 15 }, // Exploitability
         { wch: 30 }, // Exploitability Justification
-        { wch: 12 }, // Affected Users
+        { wch: 25 }, // Affected Users
         { wch: 30 }, // Affected Users Justification
-        { wch: 12 }, // Discoverability
+        { wch: 15 }, // Discoverability
         { wch: 30 }, // Discoverability Justification
-        { wch: 12 }, // DREAD Risk
+        { wch: 15 }, // DREAD Average
+        { wch: 15 }, // DREAD Risk
         
         // CVSS Assessment
-        { wch: 25 }, // CVSS Vector
+        { wch: 47 }, // CVSS Vector
         { wch: 10 }, // CVSS Score
-        { wch: 15 }, // CVSS Classification
+        { wch: 16 }, // CVSS Classification
         
         // Actions & Status
-        { wch: 30 }, // Actions
+        { wch: 12 }, // Actions
         { wch: 12 }, // Status
-        { wch: 10 }, // Priority
+        { wch: 12 }, // Priority
         { wch: 12 }, // Target Date
         { wch: 18 }, // Responsible Person
         { wch: 12 }, // Last Updated
-        { wch: 25 }, // Notes
+        { wch: 35 }, // Notes
         
         // Final Risk Assessment
         { wch: 15 }  // Final Risk Level

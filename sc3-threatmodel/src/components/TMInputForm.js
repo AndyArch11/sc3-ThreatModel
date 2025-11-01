@@ -12,12 +12,12 @@ const TMInputForm = ({
   fieldsOpen, 
   setFieldsOpen,
   dreadStats,
-  dreadRiskColors,
-  dataClassificationColors,
-  businessCriticalityColors,
-  statusColors,
-  priorityColors,
-  actionColors,
+  dreadRiskColours,
+  dataClassificationColours,
+  businessCriticalityColours,
+  statusColours,
+  priorityColours,
+  actionColours,
   lastThreat,
 }) => {
   // State for view mode (basic or extended)
@@ -299,7 +299,7 @@ const TMInputForm = ({
                               onChange={handleChange}
                               className="tm-input"
                               style={{ 
-                                color: form.dataClassification ? dataClassificationColors[getDataClassificationText(form.dataClassification)] || "#333" : "#333",
+                                color: form.dataClassification ? dataClassificationColours[getDataClassificationText(form.dataClassification)] || "#333" : "#333",
                                 fontWeight: form.dataClassification ? "bold" : "normal"
                               }}
                             >
@@ -321,7 +321,7 @@ const TMInputForm = ({
                               onChange={handleChange}
                               className="tm-input"
                               style={{ 
-                                color: form.businessCriticality ? businessCriticalityColors[getBusinessCriticalityText(form.businessCriticality)] || "#333" : "#333",
+                                color: form.businessCriticality ? businessCriticalityColours[getBusinessCriticalityText(form.businessCriticality)] || "#333" : "#333",
                                 fontWeight: form.businessCriticality ? "bold" : "normal"
                               }}
                             >
@@ -594,7 +594,7 @@ const TMInputForm = ({
                     </table>
                     <div style={{ marginTop: "1em", fontWeight: "bold", color: "#7b1fa2" }}>
                       DREAD Average: {dreadAverage} &nbsp;
-                      DREAD Risk: <span style={{ color: dreadRiskColors[dreadRisk] || "#333" }}>{dreadRisk}</span>
+                      DREAD Risk: <span style={{ color: dreadRiskColours[dreadRisk] || "#333" }}>{dreadRisk}</span>
                     </div>
                   </fieldset>
                 </td>
@@ -701,7 +701,7 @@ const TMInputForm = ({
                               onChange={handleChange}
                               className="tm-input"
                               style={{ 
-                                color: form.cvssClassification ? dreadRiskColors[form.cvssClassification] || "#333" : "#333",
+                                color: form.cvssClassification ? dreadRiskColours[form.cvssClassification] || "#333" : "#333",
                                 fontWeight: form.cvssClassification ? "bold" : "normal"
                               }}
                             >
@@ -739,7 +739,7 @@ const TMInputForm = ({
                               onChange={handleChange}
                               className="tm-input"
                               style={{ 
-                                color: form.actions ? actionColors[form.actions] || "#333" : "#333",
+                                color: form.actions ? actionColours[form.actions] || "#333" : "#333",
                                 fontWeight: form.actions ? "bold" : "normal"
                               }}
                             >
@@ -762,7 +762,7 @@ const TMInputForm = ({
                               onChange={handleChange}
                               className="tm-input"
                               style={{ 
-                                color: form.status ? statusColors[form.status] || "#333" : "#333",
+                                color: form.status ? statusColours[form.status] || "#333" : "#333",
                                 fontWeight: form.status ? "bold" : "normal"
                               }}
                             >
@@ -784,7 +784,7 @@ const TMInputForm = ({
                               onChange={handleChange}
                               className="tm-input"
                               style={{ 
-                                color: form.priority ? priorityColors[form.priority] || "#333" : "#333",
+                                color: form.priority ? priorityColours[form.priority] || "#333" : "#333",
                                 fontWeight: form.priority ? "bold" : "normal"
                               }}
                             >

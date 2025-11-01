@@ -7,12 +7,12 @@ const TMTable = ({
   setEntries,
   initialForm,
   setForm,
-  dreadRiskColors,
-  dataClassificationColors,
-  businessCriticalityColors,
-  statusColors,
-  priorityColors,
-  actionColors,
+  dreadRiskColours,
+  dataClassificationColours,
+  businessCriticalityColours,
+  statusColours,
+  priorityColours,
+  actionColours,
   setEditIndex,
   setSubmitted,
   setFieldsOpen,
@@ -273,9 +273,9 @@ const TMTable = ({
                     <td className="tm-td-threat">{entry.protocols}</td>
                     <td className="tm-td-threat">{entry.authentication}</td>
                     <td className="tm-td-threat">{entry.dataFlow}</td>
-                    <td className="tm-td-threat" style={{ backgroundColor: dataClassificationColors[getDataClassificationText(entry.dataClassification)] || "transparent" }}>{getDataClassificationText(entry.dataClassification)}</td>
+                    <td className="tm-td-threat" style={{ backgroundColor: dataClassificationColours[getDataClassificationText(entry.dataClassification)] || "transparent" }}>{getDataClassificationText(entry.dataClassification)}</td>
                     <td className="tm-td-threat">{entry.businessProcess}</td>
-                    <td className="tm-td-threat" style={{ backgroundColor: businessCriticalityColors[getBusinessCriticalityText(entry.businessCriticality)] || "transparent" }}>{getBusinessCriticalityText(entry.businessCriticality)}</td>
+                    <td className="tm-td-threat" style={{ backgroundColor: businessCriticalityColours[getBusinessCriticalityText(entry.businessCriticality)] || "transparent" }}>{getBusinessCriticalityText(entry.businessCriticality)}</td>
                     <td className="tm-td-stride">{entry.spoofing}</td>
                     <td className="tm-td-stride">{entry.tampering}</td>
                     <td className="tm-td-stride">{entry.repudiation}</td>
@@ -293,15 +293,15 @@ const TMTable = ({
                     <td className="tm-td-dread">{entry.discoverability}</td>
                     <td className="tm-td-dread">{entry.discoverabilityJustification}</td>
                     <td className="tm-td-dread">{entry.dreadAverage}</td>
-                    <td className="tm-td-dread" style={{ backgroundColor: dreadRiskColors[entry.dreadRisk] || "#333" }}>
+                    <td className="tm-td-dread" style={{ backgroundColor: dreadRiskColours[entry.dreadRisk] || "#333" }}>
                       {entry.dreadRisk}
                     </td>
                     <td className="tm-td-cvss">{entry.cvssVector}</td>
                     <td className="tm-td-cvss">{entry.cvssScore}</td>
-                    <td className="tm-td-cvss" style={{ backgroundColor: dreadRiskColors[entry.cvssClassification] || "transparent" }}>{entry.cvssClassification}</td>
-                    <td className="tm-td-action" style={{ backgroundColor: actionColors[entry.actions] || "transparent" }}>{entry.actions}</td>
-                    <td className="tm-td-action" style={{ backgroundColor: statusColors[entry.status] || "transparent" }}>{entry.status}</td>
-                    <td className="tm-td-action" style={{ backgroundColor: priorityColors[entry.priority] || "transparent" }}>{entry.priority}</td>
+                    <td className="tm-td-cvss" style={{ backgroundColor: dreadRiskColours[entry.cvssClassification] || "transparent" }}>{entry.cvssClassification}</td>
+                    <td className="tm-td-action" style={{ backgroundColor: actionColours[entry.actions] || "transparent" }}>{entry.actions}</td>
+                    <td className="tm-td-action" style={{ backgroundColor: statusColours[entry.status] || "transparent" }}>{entry.status}</td>
+                    <td className="tm-td-action" style={{ backgroundColor: priorityColours[entry.priority] || "transparent" }}>{entry.priority}</td>
                     <td className="tm-td-action">{entry.targetDate}</td>
                     <td className="tm-td-action">{entry.responsiblePerson}</td>
                     <td className="tm-td-action">{entry.lastUpdated}</td>
