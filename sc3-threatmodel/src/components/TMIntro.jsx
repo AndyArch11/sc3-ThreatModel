@@ -194,12 +194,13 @@ const TMIntro = () => {
           <h3>Before commencing a threat modelling exercise, it is important to:</h3>
           <ol>
               <li>Define the scope and objectives of the threat modelling effort.</li>
-              <li>Define the Threat Modelling methodology to be used.</li>
+              <li>Define the Threat Modelling methodology to be used.
                 <ul>
                   <li><strong>Asset-centric:</strong> Threat modelling focusing on system assets and the business impact from the loss of those assets.</li>
                   <li><strong>Attack-centric:</strong> Threat modelling focusing on potential attacks that have the greatest chance of success and their impact on the system.</li>
-                  <li><strong>System-centric:</strong> Threat modelling focusing on the system's architecture, components, and their interactions to identify potential threats.</li>
+                  <li><strong>System-centric:</strong> Threat modelling focusing on the system&apos;s architecture, components, and their interactions to identify potential threats.</li>
                 </ul>
+              </li>
               <li>Gather relevant documentation, such as system architecture diagrams and data flow diagrams.</li>
               <li>Identify key stakeholders and involve them in the process.</li>
           </ol>
@@ -305,7 +306,7 @@ const TMIntro = () => {
             They illustrate how different components of a system interact over time and can convey from where connections are initiated, helping to identify potential security issues in the flow of data and control.</p>
           <p>DFDs can also be further enhanced through user stories, persona mappings, data classification schemes, and other techniques that capture the context, sensitivity, and intent behind data flows.</p>
           <p>As an example: A data flow diagram may convey that a data flow originates from an internal data store and is sent across trust boundaries to an external entity for processing. 
-            However, it may not convey if the external entity is trusted to initiate a call to pull the data from a publicly exposed endpoint or if the data is being pushed to the external entity through the external entity's own publicly exposed endpoint.
+            However, it may not convey if the external entity is trusted to initiate a call to pull the data from a publicly exposed endpoint or if the data is being pushed to the external entity through the external entity&apos;s own publicly exposed endpoint.
             Nor does it convey how the data store moves its data to the internal process that is mediating the transfer of the data to the external entity.
             Knowing these interactions will have an impact on how the threats are modelled with respect to this data flow, allowing better identification of entry points, access rights, and potential attack vectors, etc.</p>
 
@@ -319,7 +320,7 @@ const TMIntro = () => {
             <li>Insider threats</li>
             <li>Inadequate logging and monitoring</li>
           </ul>
-          <p>To identify potential threats, it is important to consider the system's architecture, data flows, and potential attack vectors.
+          <p>To identify potential threats, it is important to consider the system&apos;s architecture, data flows, and potential attack vectors.
             Threat modelling frameworks such as STRIDE and DREAD can be used to systematically identify and categorise threats.
             The OWASP Threat Modelling technique also provides a practical, question-driven approach to identifying threats.</p>
 
@@ -379,7 +380,7 @@ const TMIntro = () => {
 
           <h3 role="doc-subtitle" style={{marginTop: '2em'}}>DREAD: Threat Prioritisation Framework</h3>
           <p>
-            DREAD is a risk assessment framework used to quantify and prioritise threats based on their severity. Helps as an input into answering the question: "What are we going to do about that?" It is an acronym for five factors:
+            DREAD is a risk assessment framework used to quantify and prioritise threats based on their severity. Helps as an input into answering the question: &quot;What are we going to do about that?&quot; It is an acronym for five factors:
           </p>
           <div style={{overflowX: 'auto'}}>
           <table className="tm-intro-table">
@@ -463,12 +464,12 @@ const TMIntro = () => {
 
           <h2>🛡️ What are we going to do about that?</h2>
 
-          <p>Once the threats are identified, you need to answer the question: "What are we going to do about that?" Similar to responding to risks, suggested Threat Modelling actions:</p>  
+          <p>Once the threats are identified, you need to answer the question: &quot;What are we going to do about that?&quot; Similar to responding to risks, suggested Threat Modelling actions:</p>  
           <ul>
             <li><strong>Mitigate:</strong> Take action to reduce the likelihood of the threat materialising.</li>
             <li><strong>Eliminate:</strong> Remove the feature or component that is causing the threat.</li>
             <li><strong>Transfer:</strong> Shift the responsibility to another entity, such as the customer.</li>
-            <li><strong>Accept:</strong> If none of the above options are acceptable, acknowledge the risk posed by the threat and don't take any action.</li>
+            <li><strong>Accept:</strong> If none of the above options are acceptable, acknowledge the risk posed by the threat and don&apos;t take any action.</li>
           </ul>
 
           <p>Once a threat has been identified, consider codifying it in a pattern such as web app authentication pattern. Then when applications require web app authentication, if they are implemented as per the pattern, another threat assessment is not required.
@@ -476,7 +477,7 @@ const TMIntro = () => {
             Pattern libraries can take significant investment in time to build, but they can greatly enhance the efficiency and effectiveness of the threat modelling process with an expectation that they will have a ROI.</p>
 
           <h2>📝 Did we do a good enough job?</h2>
-          <p>Finally, you need to answer the question: "Did we do a good enough job?" This involves reviewing the threat model and ensuring that all identified threats have been addressed.
+          <p>Finally, you need to answer the question: &quot;Did we do a good enough job?&quot; This involves reviewing the threat model and ensuring that all identified threats have been addressed.
             It is important to validate that the threats have been mitigated and that the threat model is kept up to date as the system evolves. This can be done through regular reviews, testing, and validation of the threat model.</p>
 
           <div className="tm-intro-guidance-container">
@@ -928,7 +929,7 @@ const TMIntro = () => {
                 {/* CVSS Information */}
                 <h3 role="doc-subtitle" style={{marginTop: '2em'}}>📝 Common Vulnerability Scoring System (CVSS)</h3>
                 <p>
-                  The <strong>Common Vulnerability Scoring System (CVSS)</strong> is an open framework for rating the severity of security vulnerabilities in software, and is complementary to threat modelling. CVSS helps to answer "What are we going to do about that?"
+                  The <strong>Common Vulnerability Scoring System (CVSS)</strong> is an open framework for rating the severity of security vulnerabilities in software, and is complementary to threat modelling. CVSS helps to answer &quot;What are we going to do about that?&quot;
                 </p>
                 <p>
                   CVSS provides a standardised way to capture the principal characteristics of a vulnerability and produce a numerical score reflecting its severity, which can then be translated into a qualitative representation (such as low, medium, high, or critical).
@@ -947,12 +948,12 @@ const TMIntro = () => {
                   DORA requires organisations to implement robust risk management, incident reporting, and digital resilience testing practices, including advanced threat-led testing.
                 </p>
                 <p>
-                  <strong>Threat Led Penetration Testing (TLPT)</strong> is a regulatory-driven approach to security testing, where simulated attacks are designed based on realistic threat intelligence and tailored to the organisation's risk profile. 
+                  <strong>Threat Led Penetration Testing (TLPT)</strong> is a regulatory-driven approach to security testing, where simulated attacks are designed based on realistic threat intelligence and tailored to the organisation&apos;s risk profile. 
                   TLPT is mandated by DORA and other financial sector regulations to ensure organisations can withstand sophisticated cyber threats.
                 </p>
                 <ul>
                   <li><strong>Purpose:</strong> TLPT validates the effectiveness of security controls and incident response capabilities against real-world attack scenarios.</li>
-                  <li><strong>How:</strong> Tests are based on current threat intelligence, mapped to critical business services, and executed by independent teams (often called "red teams").</li>
+                  <li><strong>How:</strong> Tests are based on current threat intelligence, mapped to critical business services, and executed by independent teams (often called &quot;red teams&quot;).</li>
                   <li><strong>Why:</strong> TLPT helps organisations identify gaps, improve resilience, and meet regulatory requirements for operational resilience and cyber risk management.</li>
                   <li><strong>Reference:</strong> <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2554" target="_blank" rel="noopener noreferrer">EU DORA Regulation</a></li>
                 </ul>
@@ -966,17 +967,17 @@ const TMIntro = () => {
                   <li><strong>Compliance:</strong> Ensure the framework or tool aligns with relevant compliance requirements, such as ISO/IEC 27001, NIST CSF, or industry-specific regulations.</li>
                   <li><strong>Integration:</strong> Assess how well the framework or tool integrates with your existing security tools and processes, such as vulnerability management systems, SIEMs, and CI/CD pipelines.</li>
                   <li><strong>Compatibility:</strong> Ensure the framework or tool is compatible with your existing technology stack, network environment, and security policies, and can work seamlessly with other tools and systems in your environment.</li>
-                  <li><strong>Scalability:</strong> Consider whether the framework or tool can scale with your organisation's growth and evolving threat landscape.</li>
+                  <li><strong>Scalability:</strong> Consider whether the framework or tool can scale with your organisation&apos;s growth and evolving threat landscape.</li>
                   <li><strong>Usability:</strong> Evaluate the user-friendliness of the framework or tool, including the learning curve for your team and the availability of training resources. Does the tool promote collaboration and engagement? Does the tool support automated visualisations, reporting, and customisation options for assets and threat models?</li>
                   <li><strong>Versioning:</strong> Choose frameworks and tools that support versioning and change management, allowing your team to track and manage changes to threat models over time.</li>
-                  <li><strong>Discovery:</strong> Assess the framework or tool's ability to facilitate the discovery of assets, vulnerabilities, and threats within your organisation. Does it identify data flows, trust boundaries, and components for threat modelling analysis?</li>
-                  <li><strong>Export:</strong> Consider the framework or tool's ability to export threat models and related documentation in various formats, such as PDF, XML, or JSON, to support collaboration and reporting.</li>
+                  <li><strong>Discovery:</strong> Assess the framework or tool&apos;s ability to facilitate the discovery of assets, vulnerabilities, and threats within your organisation. Does it identify data flows, trust boundaries, and components for threat modelling analysis?</li>
+                  <li><strong>Export:</strong> Consider the framework or tool&apos;s ability to export threat models and related documentation in various formats, such as PDF, XML, or JSON, to support collaboration and reporting.</li>
                   <li><strong>Automation:</strong> Consider the level of automation offered by the framework or tool, including automated threat modelling, reporting, and integration with other security tools.</li>
-                  <li><strong>Threat Intelligence:</strong> Assess the framework or tool's ability to leverage threat intelligence feeds and data to enhance threat modelling efforts. Does it incorporate real-time threat data, vulnerability information, and attack patterns?</li>
+                  <li><strong>Threat Intelligence:</strong> Assess the framework or tool&apos;s ability to leverage threat intelligence feeds and data to enhance threat modelling efforts. Does it incorporate real-time threat data, vulnerability information, and attack patterns?</li>
                   <li><strong>Support and Community:</strong> Consider the level of support available, including documentation, training, and community engagement, as well as local time zone support.</li>
                 </ol>
                 <p>
-                  The following frameworks may be worth considering depending on your organisation's needs and context:
+                  The following frameworks may be worth considering depending on your organisation&apos;s needs and context:
                 </p>
                 
                 <details>
@@ -1015,8 +1016,8 @@ const TMIntro = () => {
                   </details>
                   <details>
                     <summary><strong>Cyber Kill Chains</strong></summary>
-                    <li>Based on the concept of a "kill chain," which outlines the stages of an attack from initial reconnaissance to execution. 
-                      Helps answer the question: "What can go wrong?" and is often used for operational threat modelling in conjunction with MITRE ATT&CK.</li>
+                    <li>Based on the concept of a &quot;kill chain,&quot; which outlines the stages of an attack from initial reconnaissance to execution. 
+                      Helps answer the question: &quot;What can go wrong?&quot; and is often used for operational threat modelling in conjunction with MITRE ATT&CK.</li>
                     <ul>
                       <li>Reconnaissance</li>
                       <li>Weaponisation</li>
@@ -1034,7 +1035,7 @@ const TMIntro = () => {
                     <ul>
                       <li>Combines STRIDE, Security Cards, and Personae Non Gratae (PnG) frameworks.</li>
                       <li>Identifies the system</li>
-                      <li>Applies Security Cards based on developer's suggestions</li>
+                      <li>Applies Security Cards based on developer&apos;s suggestions</li>
                       <li>Removes unlikely or unrealistic threat actor personas</li>
                       <li>Summarises the results of the analysis</li>
                       <li>Moves on to a formal risk assessment</li>
@@ -1090,7 +1091,7 @@ const TMIntro = () => {
                     <summary><strong>Personae non Gratae (PnG)</strong></summary>
                     <li>Focuses on identifying and analysing threat actors (personas), looking at their:</li>
                     <ul>
-                      <li>Motivations: Understand the reasons behind an adversary's actions.</li>
+                      <li>Motivations: Understand the reasons behind an adversary&apos;s actions.</li>
                       <li>Psychology: Explore the mindset and behavioural patterns of the adversary.</li>
                       <li>Skills: Identify the capabilities and expertise of the adversary.</li>
                       <li>Goals: Determine the objectives the adversary aims to achieve.</li>
@@ -1288,7 +1289,7 @@ const TMIntro = () => {
                   </details>
                   <details>
                     <summary><strong>CWSS</strong></summary>
-                    <li>Cybersecurity Weakness and Strengths (CWSS) is a framework for assessing and improving an organisation's security posture.</li>
+                    <li>Cybersecurity Weakness and Strengths (CWSS) is a framework for assessing and improving an organisation&apos;s security posture.</li>
                     <li>Reference: <a href="https://www.nist.gov/itl/applied-cybersecurity/nist-cybersecurity-framework/online-learning-center/cybersecurity-weakness-and-strengths-cwss">CWSS</a></li>
                   </details>
                 </ul>
@@ -1443,7 +1444,7 @@ const TMIntro = () => {
                 </ul>
                 </details>
                 <p>
-                  Selection of frameworks and tools should be based on your organisation's maturity, regulatory requirements, and the specific context of your systems and business processes.
+                  Selection of frameworks and tools should be based on your organisation&apos;s maturity, regulatory requirements, and the specific context of your systems and business processes.
                 </p>
 
                 <h3 role="doc-subtitle" style={{marginTop: '2em'}}>⚠️ Important Considerations</h3>
@@ -1467,7 +1468,7 @@ const TMIntro = () => {
 
           <p>
               <strong>Note:</strong> This form is a simplified version of a threat modelling process and may not cover all aspects of a comprehensive threat model. 
-              It is recommended to use this form in conjunction with other security practices and frameworks. Subject to your organisation's specific requirements and context, also consider exploring Threat Modelling as a Service (TMaaS) offerings.
+              It is recommended to use this form in conjunction with other security practices and frameworks. Subject to your organisation&apos;s specific requirements and context, also consider exploring Threat Modelling as a Service (TMaaS) offerings.
           </p>
           <p><b>Disclaimer:</b> The information provided here is for general informational purposes only and will require adaptation for specific businesses and maturity capabilities and is not intended as legal advice. 
             Please consult with a qualified legal professional for specific legal advice tailored to your situation.</p>
