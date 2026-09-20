@@ -29,6 +29,8 @@ sc3-threatmodel
 │   ├── index.css          # CSS styles for the React application
 │   ├── App.jsx             # Main App component, imports TMForm
 │   ├── App.css            # CSS styles for the application
+│   ├── App.test.jsx            # App-level rendering tests
+│   ├── setupTests.js           # Vitest and Testing Library test configuration
 │   └── components
 │       └── TM.css              # Stylesheets
 │       └── TMForm.jsx          # Threat Model SPA form
@@ -37,8 +39,7 @@ sc3-threatmodel
 │       └── TMReport.jsx        # Threat Model report
 │       └── TMTable.jsx         # Threat Model list of threats
 │       └── ExcelExport.js      # ExcelJS workbook generator, lazy-loaded on export
-│   ├── App.test.jsx            # App-level rendering tests
-│   └── setupTests.js           # Vitest and Testing Library test configuration
+|
 ├── index.html                  # Vite root entry HTML template
 ├── vite.config.mjs             # Vite and Vitest configuration
 ├── eslint.config.mjs           # ESLint flat configuration
@@ -108,13 +109,13 @@ If launching as an embedded SPA, configure the following entry points in the hos
 
 ``` html
 <!-- 1. Include CSS -->
-<link rel="stylesheet" href="./assets/index-Dw_vEnho.css">
+<link rel="stylesheet" href="./assets/index-xxxx.css">
 
 <!-- 2. Target container -->
 <div id="root"></div>
 
 <!-- 3. Entrypoint script (loads all other modules automatically) -->
-<script type="module" src="./assets/index-tBs8NxRc.js"></script>
+<script type="module" src="./assets/index-xxxx.js"></script>
 ```
 
 Or embedded as an `<iframe>` for CSS/JS isolation

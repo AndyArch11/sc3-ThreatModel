@@ -6,7 +6,7 @@ import TMReport from "./TMReport";
 import "./TM.css";
 
 
-const VERSION = "v0.1.5"; // Update as needed
+const VERSION = "v0.1.6"; // Update as needed
 
 // Helper to get today's date in YYYY-MM-DD format
 const getToday = () => {
