@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./TM.css";
-import { exportThreatsToExcel } from "./ExcelExport";
 
 const TMTable = ({
   entries,
@@ -19,7 +18,6 @@ const TMTable = ({
   moveRowUp,
   moveRowDown,
   handleRemove,
-  handleExport,
   editIndex,
   setDraggedProcessIndex,
   draggedProcessIndex,
@@ -94,12 +92,14 @@ const TMTable = ({
   };
 
   // Helper function to handle Excel export
-  const handleExcelExport = () => {
-    exportThreatsToExcel(
-      entries, 
-      getDataClassificationText, 
-      getBusinessCriticalityText, 
-      (filename) => {
+  const handleExcelExport = async () => {
+    try {
+      const { exportThreatsToExcel } = await import('./ExcelExport');
+      exportThreatsToExcel(
+        entries,
+        getDataClassificationText,
+        getBusinessCriticalityText,
+        (filename) => {
         console.log(`Excel file exported: ${filename}`);
         // Show success message to user
         const toast = document.createElement('div');
@@ -122,8 +122,12 @@ const TMTable = ({
             document.body.removeChild(toast);
           }
         }, 3000);
-      }
-    );
+        }
+      );
+    } catch (error) {
+      console.error('Failed to load export module:', error);
+      alert('Failed to load export module. Please try again.');
+    }
   };
 
   const handleDragStart = (e, index) => {

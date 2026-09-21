@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./TM.css";
 
 const TMInputForm = ({ 
-  entries,
   form,
   setForm,
   handleChange,

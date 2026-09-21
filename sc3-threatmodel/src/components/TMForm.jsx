@@ -3,11 +3,10 @@ import TMIntro from "./TMIntro";
 import TMInputForm from "./TMInputForm";
 import TMTable from "./TMTable";
 import TMReport from "./TMReport";
-import { exportThreatsToExcel } from "./ExcelExport";
 import "./TM.css";
 
 
-const VERSION = "v0.1.5"; // Update as needed
+const VERSION = "v0.2.0"; // Update as needed
 
 // Helper to get today's date in YYYY-MM-DD format
 const getToday = () => {
@@ -85,7 +84,7 @@ const initialForm = {
 const TMForm = () => {
   const [form, setForm] = useState(initialForm);
   const [entries, setEntries] = useState([]);
-  const [submitted, setSubmitted] = useState(false);
+  const [, setSubmitted] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [fieldsOpen, setFieldsOpen] = useState(entries.length === 0);
   const [hoveredRowIndex, setHoveredRowIndex] = useState(null);
@@ -286,10 +285,6 @@ const TMForm = () => {
     }
   };
 
-  const handleExport = () => {
-    exportThreatsToExcel(entries);
-  };
-
   const handleRowClick = (idx) => {
     // If clicking on the row that's already being edited, save the changes
     if (editIndex === idx) {
@@ -311,13 +306,9 @@ const TMForm = () => {
 
   // Drag and drop state for reordering risks
   const [draggedEntryIndex, setDraggedEntryIndex] = useState(null);
-  const [dragOverIndex, setDragOverIndex] = useState(null);
   const [dropTargetIndex, setDropTargetIndex] = useState(null);
 
   const [selectedEntryIndex, setSelectedEntryIndex] = useState(null);
-
-  const updatedEntries = [...entries];
-  const draggedEntry= updatedEntries[draggedEntryIndex];
 
   // Drag and drop handlers for reordering processes
   const handleMoveProcess = (fromIndex, toIndex) => {
@@ -343,67 +334,6 @@ const TMForm = () => {
       }
     }
   };
-    
-  const handleDragStart = (e, index) => {
-    setDraggedEntryIndex(index);
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/html", e.target.outerHTML);
-    e.target.style.opacity = "0.5";
-  };
-
-  const handleDragEnd = (e) => {
-    e.target.style.opacity = "1";
-    setDraggedEntryIndex(null);
-    setDragOverIndex(null);
-  };
-
-  const handleDragOver = (e, index) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    setDragOverIndex(index);
-  };
-
-  const handleDragLeave = () => {
-    setDragOverIndex(null);
-  };
-
-  const handleDrop = (e, dropIndex) => {
-    e.preventDefault();
-
-    if (draggedEntryIndex === null || draggedEntryIndex === dropIndex) {
-      return;
-    }
-
-    // Remove the dragged item
-    updatedEntries.splice(draggedEntryIndex, 1);
-
-    // Insert it at the new position
-    const insertIndex =
-      draggedEntryIndex < dropIndex ? dropIndex - 1 : dropIndex;
-    updatedEntries.splice(insertIndex, 0, draggedEntry);
-
-    setEntries(updatedEntries);
-
-    // Update selected entry index if needed
-    if (selectedEntryIndex === draggedEntryIndex) {
-      setSelectedEntryIndex(insertIndex);
-    } else if (selectedEntryIndex !== null) {
-      if (
-        draggedEntryIndex < selectedEntryIndex &&
-        insertIndex >= selectedEntryIndex
-      ) {
-        setSelectedEntryIndex(selectedEntryIndex - 1);
-      } else if (
-        draggedEntryIndex > selectedEntryIndex &&
-        insertIndex <= selectedEntryIndex
-      ) {
-        setSelectedEntryIndex(selectedEntryIndex + 1);
-      }
-    }
-
-    setDraggedEntryIndex(null);
-    setDragOverIndex(null);
-  };  
 
   return (
     <div className="tm-main-container">
@@ -452,7 +382,6 @@ const TMForm = () => {
         moveRowUp={moveRowUp}
         moveRowDown={moveRowDown}
         handleRemove={handleRemove}
-        handleExport={handleExport}
         editIndex={editIndex}
         setDraggedProcessIndex={setDraggedEntryIndex}
         draggedProcessIndex={draggedEntryIndex}

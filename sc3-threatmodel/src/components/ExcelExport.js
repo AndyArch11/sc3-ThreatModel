@@ -1,11 +1,14 @@
-import React from 'react';
-import * as XLSX from 'xlsx';
+import * as ExcelJS from 'exceljs';
 
 // Utility function to export threats to Excel
-export function exportThreatsToExcel(threats, getDataClassificationText, getBusinessCriticalityText, onExport) {
+export async function exportThreatsToExcel(threats, getDataClassificationText, getBusinessCriticalityText, onExport) {
   try {
     // Create a new workbook
-    const wb = XLSX.utils.book_new();
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'SC3 Threat Model Tool';
+    workbook.lastModifiedBy = 'SC3 Threat Model Tool';
+    workbook.created = new Date();
+    workbook.modified = new Date();
 
     // Threat Model Guidance Worksheet
     const guidanceData = [
@@ -81,13 +84,10 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
       ['specific legal and technical advice.']
     ];
 
-    const guidanceWS = XLSX.utils.aoa_to_sheet(guidanceData);
-    
-    // Set column widths for guidance sheet
-    guidanceWS['!cols'] = [{ wch: 80 }];
-    
-    // Add the guidance worksheet to workbook
-    XLSX.utils.book_append_sheet(wb, guidanceWS, 'Threat Model Guidance');
+    const guidanceWorksheet = workbook.addWorksheet('Threat Model Guidance');
+    guidanceWorksheet.addRows(guidanceData);
+    guidanceWorksheet.getColumn(1).width = 80;
+    styleGuidanceWorksheet(guidanceWorksheet);
 
     // Threat Model Entries Worksheet
     if (threats && threats.length > 0) {
@@ -263,10 +263,11 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         ]);
       });
 
-      const threatWS = XLSX.utils.aoa_to_sheet(threatData);
-      
+      const threatWorksheet = workbook.addWorksheet('Threat Model Entries');
+      threatWorksheet.addRows(threatData);
+
       // Set column widths for comprehensive threat entries sheet
-      threatWS['!cols'] = [
+      const threatColumnWidths = [
         // Basic Threat Information
         { wch: 12 }, // Threat ID
         { wch: 30 }, // Threat Description
@@ -323,17 +324,20 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
         // Final Risk Assessment
         { wch: 15 }  // Final Risk Level
       ];
-      
-      // Add the threats worksheet to workbook
-      XLSX.utils.book_append_sheet(wb, threatWS, 'Threat Model Entries');
+      threatColumnWidths.forEach((column, index) => {
+        threatWorksheet.getColumn(index + 1).width = column.wch;
+      });
+      styleEntriesWorksheetHeader(threatWorksheet);
     } else {
       // Create empty threats worksheet if no data
       const emptyThreatData = [
         ['No threat model entries available'],
         ['Use the threat modeling form to add entries']
       ];
-      const emptyThreatWS = XLSX.utils.aoa_to_sheet(emptyThreatData);
-      XLSX.utils.book_append_sheet(wb, emptyThreatWS, 'Threat Model Entries');
+      const emptyThreatWorksheet = workbook.addWorksheet('Threat Model Entries');
+      emptyThreatWorksheet.addRows(emptyThreatData);
+      emptyThreatWorksheet.getColumn(1).width = 50;
+      styleGuidanceWorksheet(emptyThreatWorksheet);
     }
 
     // Generate filename with timestamp
@@ -341,7 +345,16 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
     const filename = `ThreatModel_${timestamp}.xlsx`;
 
     // Write and download the file
-    XLSX.writeFile(wb, filename);
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
     
     // Call onExport callback if provided
     if (onExport && typeof onExport === 'function') {
@@ -353,3 +366,32 @@ export function exportThreatsToExcel(threats, getDataClassificationText, getBusi
     alert('An error occurred while exporting to Excel. Please try again.');
   }
 }
+
+const styleGuidanceWorksheet = (worksheet) => {
+  if (worksheet.getRow(1).cellCount > 0) {
+    const headerCell = worksheet.getRow(1).getCell(1);
+    headerCell.font = { bold: true, size: 16, color: { rgb: 'FFFFFF' } };
+    headerCell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { rgb: '2F5233' }
+    };
+    headerCell.alignment = { horizontal: 'center' };
+  }
+};
+
+const styleEntriesWorksheetHeader = (worksheet) => {
+  const sectionRow = worksheet.getRow(1);
+  const headerRow = worksheet.getRow(2);
+  [sectionRow, headerRow].forEach((row) => {
+    row.eachCell((cell) => {
+      cell.font = { bold: true, color: { rgb: 'FFFFFF' } };
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { rgb: '2F5233' }
+      };
+      cell.alignment = { horizontal: 'center' };
+    });
+  });
+};
